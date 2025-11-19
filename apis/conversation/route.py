@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, File, UploadFile, HTTPException, status
-from modules.conversation.dtos.send_audio import SendAudioResponse
-from modules.conversation.service import ConversationService
+from apis.conversation.dtos.send_audio import SendAudioResponse
+from apis.conversation.service import ConversationService
 from middleware.auth import verify_session
 
 conversation_router = APIRouter(

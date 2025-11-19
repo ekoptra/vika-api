@@ -1,5 +1,5 @@
 import uuid
-from modules.auth.dtos.initialize import InitializeRequest, InitializeResponse
+from apis.auth.dtos.initialize import InitializeRequest, InitializeResponse
 
 class AuthService:
 

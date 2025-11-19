@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
-from modules.screen.dtos.update import UpdateScreensRequest, UpdateScreensResponse
-from modules.screen.service import ScreenService
+from apis.screen.dtos.update import UpdateScreensRequest, UpdateScreensResponse
+from apis.screen.service import ScreenService
 from middleware.auth import verify_session
 
 screen_router = APIRouter(

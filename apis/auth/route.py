@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
-from modules.auth.dtos.initialize import InitializeRequest, InitializeResponse
-from modules.auth.service import AuthService
+from apis.auth.dtos.initialize import InitializeRequest, InitializeResponse
+from apis.auth.service import AuthService
 
 auth_router = APIRouter(
   prefix="/auth",

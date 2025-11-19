@@ -1,4 +1,4 @@
-from modules.screen.dtos.update import UpdateScreensDto
+from apis.screen.dtos.update import UpdateScreensDto
 from typing import Dict, Any
 
 class ScreenService:
