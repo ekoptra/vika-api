@@ -1,0 +1,89 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+*.manifest
+*.spec
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Uploads (will be mounted as volume)
+uploads/
+audio_files/
+recordings/
+
+# Documentation
+README.md
+*.md
+docs/
+
+# Prisma (if not using)
+.prisma/
+prisma/migrations/
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Alembic migrations (mounted as volume)
+alembic/versions/
+
+# Test files
+test_*.py
+test_*.html
+*_test.py
+
+# Claude
+.claude/
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+.session_id

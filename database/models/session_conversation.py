@@ -1,7 +1,8 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Enum
 from sqlalchemy.sql import func
+from sqlalchemy.sql.expression import text
 from sqlalchemy.orm import relationship
-from sqlalchemy.dialects.postgresql import JSON
+from sqlalchemy.dialects.postgresql import JSON, UUID
 from database.base import Base
 import enum
 
@@ -12,8 +13,8 @@ class ConversationRole(enum.Enum):
 class SessionConversation(Base):
   __tablename__ = "session_conversations"
 
-  id = Column(Integer, primary_key=True, index=True)
-  session_id = Column(Integer, ForeignKey("sessions.id", ondelete="CASCADE"), nullable=False)
+  id = Column(UUID(as_uuid=False), primary_key=True, server_default=text("gen_random_uuid()"), index=True)
+  session_id = Column(UUID(as_uuid=False), ForeignKey("sessions.id", ondelete="CASCADE"), nullable=False)
   role = Column(Enum(ConversationRole), nullable=False)
   audio_path = Column(String(500), nullable=True)
   audio_size = Column(Integer, nullable=True)

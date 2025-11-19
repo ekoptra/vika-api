@@ -1,12 +1,15 @@
-from fastapi import Header, HTTPException, status, Depends
-from typing import Optional
-from datetime import datetime
+from fastapi import HTTPException, status, Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from datetime import datetime, timezone
 from sqlalchemy.orm import Session
 from database.base import get_db
 from database.models.session import Session as SessionModel
 
+# Define HTTP Bearer security scheme for Swagger
+security = HTTPBearer()
+
 async def verify_session(
-  authorization: Optional[str] = Header(None),
+  credentials: HTTPAuthorizationCredentials = Depends(security),
   db: Session = Depends(get_db)
 ) -> str:
   """
@@ -15,7 +18,7 @@ async def verify_session(
   Expected header format: Authorization: Bearer <session_id>
 
   Args:
-    authorization: Authorization header containing Bearer token
+    credentials: HTTP Bearer credentials from Authorization header
     db: Database session
 
   Returns:
@@ -24,23 +27,8 @@ async def verify_session(
   Raises:
     HTTPException: If token is missing, invalid, or expired
   """
-  if not authorization:
-    raise HTTPException(
-      status_code=status.HTTP_401_UNAUTHORIZED,
-      detail="Authorization header missing",
-      headers={"WWW-Authenticate": "Bearer"}
-    )
-
-  # Check if it starts with "Bearer "
-  if not authorization.startswith("Bearer "):
-    raise HTTPException(
-      status_code=status.HTTP_401_UNAUTHORIZED,
-      detail="Invalid authorization header format. Expected: Bearer <token>",
-      headers={"WWW-Authenticate": "Bearer"}
-    )
-
-  # Extract session_id
-  session_id = authorization.replace("Bearer ", "").strip()
+  # Extract session_id from credentials
+  session_id = credentials.credentials
 
   if not session_id:
     raise HTTPException(
@@ -59,8 +47,9 @@ async def verify_session(
       headers={"WWW-Authenticate": "Bearer"}
     )
 
-  # Check if session expired
-  if session.expired_at < datetime.now():
+  # Check if session expired (compare timezone-aware datetimes)
+  now = datetime.now(timezone.utc)
+  if session.expired_at < now:
     raise HTTPException(
       status_code=status.HTTP_401_UNAUTHORIZED,
       detail="Session expired. Please re-initialize.",

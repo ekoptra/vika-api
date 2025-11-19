@@ -1,7 +1,7 @@
 from common.socketio import sio
 from database.base import SessionLocal
 from database.models.session import Session as SessionModel
-from datetime import datetime
+from datetime import datetime, timezone
 
 @sio.event
 async def connect(sid, environ, auth):
@@ -14,13 +14,16 @@ async def connect(sid, environ, auth):
     auth: Authentication data (harus berisi session_id)
   """
   print(f"🔌 Client connecting: {sid}")
+  print(f"   Auth data received: {auth}")
 
   # Validate auth data
   if not auth or 'session_id' not in auth:
     print(f"❌ Connection rejected: No session_id provided")
+    print(f"   Auth keys: {list(auth.keys()) if auth else 'None'}")
     return False
 
   session_id = auth['session_id']
+  print(f"   Session ID: {session_id}")
 
   # Validate session exists in database
   db = SessionLocal()
@@ -32,7 +35,7 @@ async def connect(sid, environ, auth):
       return False
 
     # Check if session expired
-    if session.expired_at < datetime.now():
+    if session.expired_at < datetime.now(timezone.utc):
       print(f"❌ Connection rejected: Session expired {session_id}")
       return False
 
@@ -65,7 +68,7 @@ async def disconnect(sid):
 
 @sio.event
 async def ping(sid, data):
-  await sio.emit('pong', {'message': 'pong', 'timestamp': datetime.now().isoformat()}, room=sid)
+  await sio.emit('pong', {'message': 'pong', 'timestamp': datetime.now(timezone.utc).isoformat()}, room=sid)
 
 
 async def emit_to_session(session_id: str, event: str, data: dict):

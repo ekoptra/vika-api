@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: vika-api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      # Set DATABASE_URL via .env file or environment variable
+      - DATABASE_URL=${DATABASE_URL}
+      - UPLOAD_DIR=uploads/audio
+    volumes:
+      - ./uploads:/app/uploads

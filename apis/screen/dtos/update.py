@@ -5,7 +5,7 @@ class UpdateScreenRequest(BaseModel):
   screen_id: str = Field(..., min_length=1, description="Unique screen identifier")
   screen_name: str = Field(..., min_length=1)
   description: str = Field(..., min_length=1)
-  deep_link: str = Field(..., regex=r'^[a-zA-Z0-9+.-]+://.*$', description="Valid deep link URL")
+  deep_link: str = Field(..., pattern=r'^[a-zA-Z0-9+.-]+://.*$', description="Valid deep link URL")
   keywords: List[str] = Field(..., min_items=1)
 
 class UpdateScreensRequest(BaseModel):

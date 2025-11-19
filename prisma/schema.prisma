@@ -11,14 +11,14 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
+  id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   nama     String @db.VarChar(255)
   password String @db.VarChar(255)
   email    String @unique @db.VarChar(255)
   api_key  String @unique @map("api_key") @db.VarChar(255)
 
   created_at DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  updated_at DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  updated_at DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   // Relations
   sessions Session[]
@@ -29,13 +29,13 @@ model User {
 }
 
 model Session {
-  id          Int      @id @default(autoincrement())
-  user_id     Int      @map("user_id")
-  expired_at  DateTime @map("expired_at") @db.Timestamptz(6)
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id     String   @map("user_id") @db.Uuid
   screen_list Json?    @map("screen_list")
+  expired_at  DateTime @map("expired_at") @db.Timestamptz(6)
 
   created_at DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  updated_at DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  updated_at DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   user                  User                  @relation(fields: [user_id], references: [id], onDelete: Cascade)
   session_conversations SessionConversation[]
@@ -49,15 +49,15 @@ enum ConversationRole {
 }
 
 model SessionConversation {
-  id            Int              @id @default(autoincrement())
-  session_id    Int              @map("session_id")
+  id            String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  session_id    String           @map("session_id") @db.Uuid
   role          ConversationRole
   audio_path    String?          @map("audio_path") @db.VarChar(500)
   audio_size    Int?             @map("audio_size")
   response_json Json?            @map("response_json")
 
   created_at DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  updated_at DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  updated_at DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   session Session @relation(fields: [session_id], references: [id], onDelete: Cascade)
 

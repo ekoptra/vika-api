@@ -66,12 +66,6 @@ htmlcov/
 
 # Audio files (uploaded recordings)
 uploads/
-audio_files/
-recordings/
-*.mp3
-*.wav
-*.m4a
-*.ogg
 
 # Temporary files
 *.tmp
@@ -81,3 +75,6 @@ recordings/
 
 # Prisma
 .prisma/
+
+# Docker
+backup_*.sql

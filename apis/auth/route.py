@@ -23,8 +23,5 @@ async def initialize(payload: InitializeRequest):
   Returns:
     - session_id: Unique session identifier
   """
-  try:
-    session_id = AuthService.initialize(payload)
-    return InitializeResponse(session_id=session_id)
-  except Exception as e:
-    raise HTTPException(status_code=400, detail=str(e))
+  session_id = AuthService.initialize(payload)
+  return InitializeResponse(session_id=session_id)

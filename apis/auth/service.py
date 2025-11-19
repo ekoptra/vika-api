@@ -2,12 +2,13 @@ import uuid
 import hmac
 import hashlib
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from fastapi import HTTPException, status
 from database.base import SessionLocal
 from database.models.user import User
 from database.models.session import Session as SessionModel
 from apis.auth.dtos.initialize import InitializeRequest
+from common.config import AppConfig
 
 class AuthService:
 
@@ -27,12 +28,13 @@ class AuthService:
       current_timestamp = int(time.time() * 1000)  # milliseconds
       time_diff = abs(current_timestamp - request.timestamp)
 
-      # Allow 5 minutes difference
-      if time_diff > 5 * 60 * 1000:
-        raise HTTPException(
-          status_code=status.HTTP_401_UNAUTHORIZED,
-          detail="Request timestamp expired. Please resend with current timestamp."
-        )
+      if AppConfig.APP_ENV == "production":
+        # Allow 5 minutes difference
+        if time_diff > 5 * 60 * 1000:
+          raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Request timestamp expired. Please resend with current timestamp."
+          )
 
       # 2. Find user by API key
       user = db.query(User).filter(User.api_key == request.api_key).first()
@@ -44,20 +46,21 @@ class AuthService:
         )
 
       # 3. Verify signature
-      expected_signature = AuthService._generate_signature(
-        request.api_key,
-        request.timestamp
-      )
-
-      if not hmac.compare_digest(expected_signature, request.signature):
-        raise HTTPException(
-          status_code=status.HTTP_401_UNAUTHORIZED,
-          detail="Invalid signature"
+      if AppConfig.APP_ENV == "production":
+        expected_signature = AuthService._generate_signature(
+          request.api_key,
+          request.timestamp
         )
+
+        if not hmac.compare_digest(expected_signature, request.signature):
+          raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid signature"
+          )
 
       # 4. Create new session (expire in 24 hours)
       session_id = str(uuid.uuid4())
-      expired_at = datetime.now() + timedelta(hours=24)
+      expired_at = datetime.now(timezone.utc) + timedelta(hours=24)
 
       new_session = SessionModel(
         id=session_id,

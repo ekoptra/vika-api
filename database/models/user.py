@@ -1,12 +1,13 @@
-from sqlalchemy import Column, Integer, String, DateTime, Text
+from sqlalchemy import Column, String, DateTime, Text
 from sqlalchemy.sql import func
-from sqlalchemy.dialects.postgresql import JSON
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.sql.expression import text
 from database.base import Base
 
 class User(Base):
   __tablename__ = "users"
 
-  id = Column(Integer, primary_key=True, index=True)
+  id = Column(UUID(as_uuid=False), primary_key=True, server_default=text("gen_random_uuid()"), index=True)
   nama = Column(String(255), nullable=False)
   password = Column(String(255), nullable=False)
   email = Column(String(255), unique=True, nullable=False, index=True)

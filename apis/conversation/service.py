@@ -58,8 +58,8 @@ class ConversationService:
       db.add(conversation)
       db.commit()
       db.refresh(conversation)
-      
-      conversation_id = conversation.id
+
+      conversation_id = str(conversation.id)
 
       asyncio.create_task(
         ConversationService._background_process_audio(conversation_id, session_id)
@@ -68,14 +68,14 @@ class ConversationService:
       return {
         "status": True,
         "message": "Audio received and queued for processing",
-        "conversation_id": conversation.id
+        "conversation_id": conversation_id
       }
 
     finally:
       db.close()
-      
+
   @staticmethod
-  async def _background_process_audio(conversation_id: int, session_id: str):
+  async def _background_process_audio(conversation_id: str, session_id: str):
     """
     Background process untuk transcript dan mapping deep-link
 
@@ -137,7 +137,7 @@ class ConversationService:
     finally:
       db.close()
 
-  @staticmethod  
+  @staticmethod
   def _generate_dummy_response(db: Session, session_id: str) -> Dict[str, Any]:
     """
     Generate dummy response with random navigation from user's screen_list
