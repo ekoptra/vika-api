@@ -4,6 +4,7 @@ from fastapi.responses import HTMLResponse
 from apis.screen.route import screen_router
 from apis.auth.route import auth_router
 from apis.conversation.route import conversation_router
+from apis.audio.route import audio_router
 from common.socketio import sio
 import apis.socketio.handlers
 from pathlib import Path
@@ -27,6 +28,7 @@ app.add_middleware(
 app.include_router(auth_router)
 app.include_router(screen_router)
 app.include_router(conversation_router)
+app.include_router(audio_router)
 
 # Test page for Socket.IO
 @app.get("/test/socket", response_class=HTMLResponse, tags=["Testing"])

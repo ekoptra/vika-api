@@ -1,5 +1,4 @@
 import asyncio
-import os
 import uuid
 import random
 from pathlib import Path
@@ -34,19 +33,21 @@ class ConversationService:
       audio_data = await audio_file.read()
       audio_size = len(audio_data)
 
-      # 2. Create upload directory if not exists
-      Path(AppConfig.UPLOAD_DIR).mkdir(parents=True, exist_ok=True)
-
-      # 3. Generate unique filename
+      # 2. Generate unique filename with normalized path
       file_extension = Path(audio_file.filename).suffix if audio_file.filename else ".mp3"
       unique_filename = f"{uuid.uuid4()}{file_extension}"
-      file_path = os.path.join(AppConfig.UPLOAD_DIR, unique_filename)
+      file_path = str(Path(AppConfig.UPLOAD_DIR) / unique_filename)
 
-      # 4. Save audio to file system
-      with open(file_path, "wb") as f:
-        f.write(audio_data)
+      # 3. Save audio to file system only in production
+      if AppConfig.APP_ENV == "production":
+        Path(AppConfig.UPLOAD_DIR).mkdir(parents=True, exist_ok=True)
+        with open(file_path, "wb") as f:
+          f.write(audio_data)
+      else:
+        # Development mode: don't save actual audio, just keep the path
+        print(f"📝 [DEV] Skipping audio save, path: {file_path}")
 
-      # 5. Save conversation record to database (role='user')
+      # 4. Save conversation record to database (role='user')
       conversation = SessionConversation(
         session_id=session_id,
         role=ConversationRole.user,
@@ -173,10 +174,18 @@ class ConversationService:
     transcription = f"Take me to {screen_name}"
     reply_text = f"Sure, navigating to {screen_name}."
 
+    # Generate dummy audio reply URL
+    if AppConfig.APP_ENV == "production":
+      reply_audio_url = None  # TODO: Generate actual audio response in production
+    else:
+      # Development mode: generate dummy audio filename
+      dummy_audio_filename = f"reply_{uuid.uuid4()}.wav"
+      reply_audio_url = f"/audio/{dummy_audio_filename}"
+
     return {
       "transcription": transcription,
       "reply_text": reply_text,
-      "reply_audio_url": None,  # TODO: Generate audio response
+      "reply_audio_url": reply_audio_url,
       "navigation": {
         "screen_id": random_screen.get("screen_id"),
         "screen_name": random_screen.get("screen_name"),
