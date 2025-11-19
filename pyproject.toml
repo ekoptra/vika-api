@@ -1,14 +1,21 @@
 [project]
 name = "vika-ng-api"
 version = "0.1.0"
-description = ""
+description = "Voice-based Navigation SDK API"
 authors = [
     {name = "Your Name",email = "you@example.com"}
 ]
 readme = "README.md"
 requires-python = ">=3.12,<4"
 dependencies = [
-    "fastapi[standard] (>=0.121.2,<0.122.0)"
+    "fastapi[standard] (>=0.121.2,<0.122.0)",
+    "sqlalchemy>=2.0.25",
+    "psycopg2-binary>=2.9.9",
+    "python-multipart>=0.0.6",
+    "pydantic>=2.5.3",
+    "pydantic-settings>=2.1.0",
+    "python-dotenv>=1.0.0",
+    "prisma (>=0.15.0,<0.16.0)"
 ]
 
 

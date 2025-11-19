@@ -1,0 +1,65 @@
+// Prisma Schema for Vika API
+// Based on database models in database/models/
+
+generator client {
+  provider = "prisma-client-py"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int    @id @default(autoincrement())
+  nama        String @db.VarChar(255)
+  password    String @db.VarChar(255)
+  email       String @unique @db.VarChar(255)
+  api_key     String @unique @map("api_key") @db.VarChar(255)
+  screen_list Json?  @map("screen_list")
+
+  created_at DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updated_at DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  sessions Session[]
+
+  @@index([email])
+  @@index([api_key])
+  @@map("users")
+}
+
+model Session {
+  id         Int      @id @default(autoincrement())
+  user_id    Int      @map("user_id")
+  expired_at DateTime @map("expired_at") @db.Timestamptz(6)
+
+  created_at DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updated_at DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  user                  User                  @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  session_conversations SessionConversation[]
+
+  @@map("sessions")
+}
+
+enum ConversationRole {
+  user
+  ai
+}
+
+model SessionConversation {
+  id            Int              @id @default(autoincrement())
+  session_id    Int              @map("session_id")
+  role          ConversationRole
+  audio_path    String?          @map("audio_path") @db.VarChar(500)
+  audio_size    Int?             @map("audio_size")
+  response_json Json?            @map("response_json")
+
+  created_at DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updated_at DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  session Session @relation(fields: [session_id], references: [id], onDelete: Cascade)
+
+  @@map("session_conversations")
+}

@@ -77,3 +77,6 @@ recordings/
 *.tmp
 *.temp
 .cache/
+
+# Prisma
+.prisma/
