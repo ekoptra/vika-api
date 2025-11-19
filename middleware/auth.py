@@ -2,7 +2,7 @@ from fastapi import Header, HTTPException, status, Depends
 from typing import Optional
 from datetime import datetime
 from sqlalchemy.orm import Session
-from database.base import SessionLocal, get_db
+from database.base import get_db
 from database.models.session import Session as SessionModel
 
 async def verify_session(

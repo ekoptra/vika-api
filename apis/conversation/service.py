@@ -10,6 +10,7 @@ from database.base import SessionLocal
 from database.models.session import Session as SessionModel
 from database.models.session_conversation import SessionConversation, ConversationRole
 from common.config import AppConfig
+from apis.socketio.handlers import emit_to_session
 
 class ConversationService:
 
@@ -117,6 +118,18 @@ class ConversationService:
         print(f"  → Navigation: {nav.get('screen_name')} ({nav.get('deep_link')})")
       else:
         print(f"✓ Background processing completed (no navigation)")
+
+      # Emit Socket.IO event to notify client
+      await emit_to_session(
+        session_id=session_id,
+        event='conversation_processed',
+        data={
+          'conversation_id': conversation_id,
+          'status': 'completed',
+          'result': dummy_response
+        }
+      )
+      print(f"📤 Emitted conversation_processed event to session {session_id}")
 
     except Exception as e:
       print(f"✗ Error in background processing: {e}")
