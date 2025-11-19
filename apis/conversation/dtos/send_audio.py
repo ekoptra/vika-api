@@ -1,7 +1,6 @@
 from pydantic import BaseModel, Field
 
 class SendAudioResponse(BaseModel):
-  audio_size: int = Field(..., description="Size of the received audio in bytes")
-  filename: str = Field(..., description="Original filename of the uploaded audio")
-  content_type: str = Field(..., description="MIME type of the uploaded audio")
-  status: str = Field(..., description="Processing status of the audio")
+  status: bool = Field(..., description="Status of audio reception")
+  message: str = Field(..., description="Response message")
+  conversation_id: int = Field(..., description="ID of created conversation record")

@@ -11,12 +11,11 @@ datasource db {
 }
 
 model User {
-  id          Int    @id @default(autoincrement())
-  nama        String @db.VarChar(255)
-  password    String @db.VarChar(255)
-  email       String @unique @db.VarChar(255)
-  api_key     String @unique @map("api_key") @db.VarChar(255)
-  screen_list Json?  @map("screen_list")
+  id       Int    @id @default(autoincrement())
+  nama     String @db.VarChar(255)
+  password String @db.VarChar(255)
+  email    String @unique @db.VarChar(255)
+  api_key  String @unique @map("api_key") @db.VarChar(255)
 
   created_at DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updated_at DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
@@ -30,9 +29,10 @@ model User {
 }
 
 model Session {
-  id         Int      @id @default(autoincrement())
-  user_id    Int      @map("user_id")
-  expired_at DateTime @map("expired_at") @db.Timestamptz(6)
+  id          Int      @id @default(autoincrement())
+  user_id     Int      @map("user_id")
+  expired_at  DateTime @map("expired_at") @db.Timestamptz(6)
+  screen_list Json?    @map("screen_list")
 
   created_at DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updated_at DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)

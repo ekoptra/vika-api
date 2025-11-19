@@ -1,19 +1,28 @@
-from fastapi import Header, HTTPException, status
+from fastapi import Header, HTTPException, status, Depends
 from typing import Optional
+from datetime import datetime
+from sqlalchemy.orm import Session
+from database.base import SessionLocal, get_db
+from database.models.session import Session as SessionModel
 
-async def verify_session(authorization: Optional[str] = Header(None)):
+async def verify_session(
+  authorization: Optional[str] = Header(None),
+  db: Session = Depends(get_db)
+) -> str:
   """
   Middleware dependency to verify session_id from Bearer token
+
   Expected header format: Authorization: Bearer <session_id>
 
   Args:
     authorization: Authorization header containing Bearer token
+    db: Database session
 
   Returns:
     session_id: Valid session identifier
 
   Raises:
-    HTTPException: If token is missing or invalid
+    HTTPException: If token is missing, invalid, or expired
   """
   if not authorization:
     raise HTTPException(
@@ -40,6 +49,22 @@ async def verify_session(authorization: Optional[str] = Header(None)):
       headers={"WWW-Authenticate": "Bearer"}
     )
 
-  # TODO: Implement actual session validation logic here
+  # Validate session in database
+  session = db.query(SessionModel).filter(SessionModel.id == session_id).first()
+
+  if not session:
+    raise HTTPException(
+      status_code=status.HTTP_401_UNAUTHORIZED,
+      detail="Invalid session ID",
+      headers={"WWW-Authenticate": "Bearer"}
+    )
+
+  # Check if session expired
+  if session.expired_at < datetime.now():
+    raise HTTPException(
+      status_code=status.HTTP_401_UNAUTHORIZED,
+      detail="Session expired. Please re-initialize.",
+      headers={"WWW-Authenticate": "Bearer"}
+    )
 
   return session_id

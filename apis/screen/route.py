@@ -8,22 +8,28 @@ screen_router = APIRouter(
   tags=["Screen"]
 )
 
-@screen_router.post("/")
-async def update_screen(
+@screen_router.post("/", response_model=UpdateScreensResponse)
+async def update_screens(
   payload: UpdateScreensRequest,
   session_id: str = Depends(verify_session)
 ):
   """
-  Update a single screen
-  
+  Update user's screen list
+
+  This endpoint saves the list of screens to the user's profile.
+  The screens will be used for voice navigation matching.
+
+  Requires:
+    - Authorization: Bearer <session_id>
+
   Args:
-    payload: Screen data to update
+    payload: List of screens to update/register
     session_id: Extracted from Bearer token via middleware
 
   Returns:
-    Status of the update operation
+    UpdateScreensResponse with count of updated screens
   """
-  
+
   result = ScreenService.update_screens(session_id, payload)
-  
+
   return UpdateScreensResponse(updated_screen_count=result['updated_screen_count'])

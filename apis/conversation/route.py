@@ -15,13 +15,20 @@ async def send_audio(
 ):
   """
   Send audio recording for processing
-  
+
+  Requires:
+    - Authorization: Bearer <session_id>
+    - Content-Type: multipart/form-data
+    - audio: Audio file
+
+  Supported formats: mp3, wav, m4a, ogg, webm
+
   Args:
     audio: Audio file (multipart/form-data)
     session_id: Extracted from Bearer token via middleware
 
   Returns:
-    Status indicating audio was received successfully
+    SendAudioResponse with status and conversation_id
   """
 
   # Validate audio file exists
@@ -31,6 +38,7 @@ async def send_audio(
       detail="No audio file provided"
     )
 
+  # Validate audio format
   allowed_types = [
     "audio/mpeg",      # mp3
     "audio/mp3",       # mp3
@@ -50,8 +58,7 @@ async def send_audio(
       detail=f"Unsupported audio format: {audio.content_type}"
     )
 
-  # Process audio (queued for background)
+  # Process audio and return immediately
   result = await ConversationService.process_audio(session_id, audio)
 
-  # Immediately return success
   return SendAudioResponse(**result)
