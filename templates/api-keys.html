@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Keys - Vika API</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+        background: linear-gradient(135deg, #0FAF65 0%, #059669 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .navbar {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 1rem 0;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #0FAF65 0%, #059669 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .nav-right {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      .user-info {
+        color: #555;
+        font-weight: 500;
+      }
+
+      .btn-logout {
+        background: #dc3545;
+        color: white;
+        padding: 0.6rem 1.2rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .btn-logout:hover {
+        background: #c82333;
+        transform: translateY(-2px);
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .header {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .header h1 {
+        font-size: 2rem;
+        color: #333;
+        margin-bottom: 0.5rem;
+      }
+
+      .header p {
+        color: #666;
+        font-size: 1rem;
+      }
+
+      .api-key-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .card-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .key-display {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        position: relative;
+      }
+
+      .key-label {
+        font-size: 0.85rem;
+        color: #666;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+      }
+
+      .key-value {
+        font-family: "Courier New", monospace;
+        font-size: 1.1rem;
+        color: #333;
+        word-break: break-all;
+        padding-right: 100px;
+      }
+
+      .copy-btn {
+        position: absolute;
+        right: 1.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #0FAF65;
+        color: white;
+        border: none;
+        padding: 0.7rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .copy-btn:hover {
+        background: #059669;
+        transform: translateY(-50%) translateY(-2px);
+      }
+
+      .copy-btn.copied {
+        background: #28a745;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+      }
+
+      .stat-card {
+        background: linear-gradient(135deg, #0FAF65 0%, #059669 100%);
+        color: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(15, 175, 101, 0.3);
+      }
+
+      .stat-label {
+        font-size: 0.9rem;
+        opacity: 0.9;
+        margin-bottom: 0.5rem;
+      }
+
+      .stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+      }
+
+      .documentation {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .doc-section {
+        margin-bottom: 1.5rem;
+      }
+
+      .doc-section h3 {
+        color: #333;
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+      }
+
+      .code-block {
+        background: #1a1a2e;
+        color: #f8f8f2;
+        padding: 1.5rem;
+        border-radius: 10px;
+        overflow-x: auto;
+        font-family: "Courier New", monospace;
+        font-size: 0.9rem;
+        position: relative;
+      }
+
+      .code-block pre {
+        margin: 0;
+      }
+
+      .copy-code-btn {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .copy-code-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      .alert {
+        padding: 1rem;
+        border-radius: 10px;
+        margin-bottom: 1.5rem;
+        font-size: 0.95rem;
+        display: none;
+      }
+
+      .alert-success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+
+      .alert-warning {
+        background: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeeba;
+      }
+
+      .alert.show {
+        display: block;
+        animation: slideDown 0.3s ease-out;
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .nav-container {
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .key-value {
+          font-size: 0.9rem;
+          padding-right: 0;
+        }
+
+        .copy-btn {
+          position: static;
+          transform: none;
+          width: 100%;
+          margin-top: 1rem;
+        }
+
+        .copy-btn:hover {
+          transform: translateY(-2px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="logo">Vika API</div>
+        <div class="nav-right">
+          <span class="user-info" id="userEmail">Loading...</span>
+          <button class="btn-logout" onclick="logout()">Logout</button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="header">
+        <h1>Dashboard API Key</h1>
+        <p>Kelola API key Anda dan pantau penggunaan</p>
+      </div>
+
+      <div id="alertBox" class="alert"></div>
+
+      <div class="api-key-card">
+        <div class="card-title">
+          <span>🔑</span>
+          <span>API Key Anda</span>
+        </div>
+
+        <div class="key-display">
+          <div class="key-label">API Key</div>
+          <div class="key-value" id="apiKeyValue">
+            ************************************
+          </div>
+          <button class="copy-btn" onclick="copyApiKey()">Copy</button>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Requests</div>
+            <div class="stat-value" id="totalRequests">0</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Requests Today</div>
+            <div class="stat-value" id="todayRequests">0</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Status</div>
+            <div class="stat-value">Active</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="documentation">
+        <div class="card-title">
+          <span>📚</span>
+          <span>Quick Start Guide</span>
+        </div>
+
+        <div class="doc-section">
+          <h3>1. Initialize Session</h3>
+          <p style="color: #666; margin-bottom: 1rem">
+            Gunakan API key Anda untuk membuat session baru:
+          </p>
+          <div class="code-block">
+            <button class="copy-code-btn" onclick="copyCode(this)">Copy</button>
+            <pre>
+POST /auth/initialize
+Content-Type: application/json
+
+{
+  "api_key": "YOUR_API_KEY",
+  "timestamp": 1234567890,
+  "signature": "your_signature_here"
+}</pre>
+          </div>
+        </div>
+
+        <div class="doc-section">
+          <h3>2. Connect to Socket.IO</h3>
+          <p style="color: #666; margin-bottom: 1rem">
+            Gunakan session ID untuk connect ke Socket.IO:
+          </p>
+          <div class="code-block">
+            <button class="copy-code-btn" onclick="copyCode(this)">Copy</button>
+            <pre>
+const socket = io("http://localhost:8000", {
+  auth: {
+    session_id: "YOUR_SESSION_ID"
+  }
+});
+
+socket.on("connected", (data) => {
+  console.log("Connected:", data);
+});</pre>
+          </div>
+        </div>
+
+        <div class="doc-section">
+          <h3>3. Send Audio for Processing</h3>
+          <p style="color: #666; margin-bottom: 1rem">
+            Upload audio untuk mendapatkan navigation response:
+          </p>
+          <div class="code-block">
+            <button class="copy-code-btn" onclick="copyCode(this)">Copy</button>
+            <pre>
+POST /conversation/{session_id}
+Content-Type: multipart/form-data
+
+{
+  "audio": [audio_file],
+  "screen_name": "home_screen"
+}</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let apiKey = null;
+
+      function showAlert(message, type) {
+        const alertBox = document.getElementById("alertBox");
+        alertBox.textContent = message;
+        alertBox.className = `alert alert-${type} show`;
+
+        setTimeout(() => {
+          alertBox.classList.remove("show");
+        }, 5000);
+      }
+
+      function copyApiKey() {
+        const apiKeyValue = document.getElementById("apiKeyValue").textContent;
+        if (apiKeyValue && !apiKeyValue.includes("*")) {
+          navigator.clipboard.writeText(apiKeyValue).then(() => {
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = "Copied!";
+            btn.classList.add("copied");
+
+            setTimeout(() => {
+              btn.textContent = originalText;
+              btn.classList.remove("copied");
+            }, 2000);
+
+            showAlert("API Key berhasil disalin!", "success");
+          });
+        }
+      }
+
+      function copyCode(btn) {
+        const codeBlock = btn.parentElement;
+        const code = codeBlock.querySelector("pre").textContent;
+
+        navigator.clipboard.writeText(code.trim()).then(() => {
+          const originalText = btn.textContent;
+          btn.textContent = "Copied!";
+
+          setTimeout(() => {
+            btn.textContent = originalText;
+          }, 2000);
+        });
+      }
+
+      function logout() {
+        localStorage.removeItem("user");
+        localStorage.removeItem("api_key");
+        sessionStorage.removeItem("user");
+        sessionStorage.removeItem("api_key");
+
+        window.location.href = "/login";
+      }
+
+      // Load user data
+      window.addEventListener("DOMContentLoaded", () => {
+        // Check URL for new API key
+        const urlParams = new URLSearchParams(window.location.search);
+        const newApiKey = urlParams.get("key");
+
+        if (newApiKey) {
+          apiKey = newApiKey;
+          document.getElementById("apiKeyValue").textContent = newApiKey;
+          showAlert(
+            "Selamat datang! Simpan API key Anda dengan aman.",
+            "warning"
+          );
+
+          // Store in session
+          sessionStorage.setItem("api_key", newApiKey);
+
+          // Clean URL
+          window.history.replaceState({}, document.title, "/api-keys");
+        } else {
+          // Load from storage
+          apiKey =
+            localStorage.getItem("api_key") ||
+            sessionStorage.getItem("api_key");
+
+          if (apiKey) {
+            document.getElementById("apiKeyValue").textContent = apiKey;
+          } else {
+            // Redirect to login if no API key
+            window.location.href = "/login";
+            return;
+          }
+        }
+
+        // Load user info
+        const userStr =
+          localStorage.getItem("user") || sessionStorage.getItem("user");
+
+        if (userStr) {
+          try {
+            const user = JSON.parse(userStr);
+            document.getElementById("userEmail").textContent = user.email;
+          } catch (e) {
+            document.getElementById("userEmail").textContent = "User";
+          }
+        }
+
+        // Load stats (placeholder - would come from API)
+        loadStats();
+      });
+
+      async function loadStats() {
+        // This would typically fetch from an API endpoint
+        // For now, using placeholder data
+        document.getElementById("totalRequests").textContent = "0";
+        document.getElementById("todayRequests").textContent = "0";
+      }
+    </script>
+  </body>
+</html>

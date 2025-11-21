@@ -6,7 +6,7 @@ from apis.auth.route import auth_router
 from apis.conversation.route import conversation_router
 from apis.audio.route import audio_router
 from common.socketio import sio
-import apis.socketio.handlers
+from pages.route import pages_router
 from pathlib import Path
 import socketio
 
@@ -29,15 +29,7 @@ app.include_router(auth_router)
 app.include_router(screen_router)
 app.include_router(conversation_router)
 app.include_router(audio_router)
-
-# Test page for Socket.IO
-@app.get("/test/socket", response_class=HTMLResponse, tags=["Testing"])
-async def socket_test_page():
-  """
-  Socket.IO test page - interactive UI to test real-time connection
-  """
-  html_path = Path(__file__).parent / "templates" / "socket_test.html"
-  return html_path.read_text(encoding="utf-8")
+app.include_router(pages_router)
 
 # Mount Socket.IO with other_asgi_app
 socket_asgi = socketio.ASGIApp(sio, other_asgi_app=app)

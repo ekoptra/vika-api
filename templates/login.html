@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Vika API</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+        background: linear-gradient(135deg, #0FAF65 0%, #059669 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .container {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        max-width: 450px;
+        width: 100%;
+        padding: 3rem;
+        animation: slideUp 0.5s ease-out;
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .logo {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .logo h1 {
+        font-size: 2.5rem;
+        background: linear-gradient(135deg, #0FAF65 0%, #059669 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+      }
+
+      .logo p {
+        color: #666;
+        font-size: 1rem;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #333;
+        font-size: 0.95rem;
+      }
+
+      input {
+        width: 100%;
+        padding: 0.9rem 1.2rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: all 0.3s;
+        font-family: inherit;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: #0FAF65;
+        box-shadow: 0 0 0 3px rgba(15, 175, 101, 0.1);
+      }
+
+      input:disabled {
+        background: #f5f5f5;
+        cursor: not-allowed;
+      }
+
+      .btn {
+        width: 100%;
+        padding: 1rem;
+        border: none;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 1rem;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #0FAF65 0%, #059669 100%);
+        color: white;
+      }
+
+      .btn-primary:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(15, 175, 101, 0.4);
+      }
+
+      .btn-primary:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .register-link {
+        text-align: center;
+        margin-top: 1.5rem;
+        color: #666;
+        font-size: 0.95rem;
+      }
+
+      .register-link a {
+        color: #0FAF65;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s;
+      }
+
+      .register-link a:hover {
+        color: #059669;
+        text-decoration: underline;
+      }
+
+      .alert {
+        padding: 1rem;
+        border-radius: 10px;
+        margin-bottom: 1.5rem;
+        font-size: 0.9rem;
+        display: none;
+      }
+
+      .alert-success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+
+      .alert-error {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+
+      .alert.show {
+        display: block;
+        animation: slideDown 0.3s ease-out;
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .back-home {
+        text-align: center;
+        margin-top: 1.5rem;
+      }
+
+      .back-home a {
+        color: #0FAF65;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: color 0.3s;
+      }
+
+      .back-home a:hover {
+        color: #059669;
+      }
+
+      .checkbox-group {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+
+      .checkbox-group input[type="checkbox"] {
+        width: auto;
+        cursor: pointer;
+      }
+
+      .checkbox-group label {
+        margin: 0;
+        font-weight: 400;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 2rem;
+        }
+
+        .logo h1 {
+          font-size: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="logo">
+        <h1>Vika API</h1>
+        <p>Login ke akun Anda</p>
+      </div>
+
+      <div id="alertBox" class="alert"></div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="nama@example.com"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Masukkan password"
+            required
+          />
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="rememberMe" name="rememberMe" />
+          <label for="rememberMe">Ingat saya</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="submitBtn">
+          Login
+        </button>
+      </form>
+
+      <div class="register-link">
+        Belum punya akun? <a href="/register">Daftar sekarang</a>
+      </div>
+
+      <div class="back-home">
+        <a href="/">← Kembali ke Beranda</a>
+      </div>
+    </div>
+
+    <script>
+      const loginForm = document.getElementById("loginForm");
+      const alertBox = document.getElementById("alertBox");
+      const submitBtn = document.getElementById("submitBtn");
+
+      function showAlert(message, type) {
+        alertBox.textContent = message;
+        alertBox.className = `alert alert-${type} show`;
+
+        setTimeout(() => {
+          alertBox.classList.remove("show");
+        }, 5000);
+      }
+
+      // Check if user was just redirected with a success message
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get("registered") === "true") {
+        showAlert("Pendaftaran berhasil! Silakan login.", "success");
+      }
+
+      loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+        const rememberMe = document.getElementById("rememberMe").checked;
+
+        // Disable button
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Logging in...";
+
+        try {
+          const response = await fetch("/auth/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email,
+              password,
+            }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            // Store user data
+            if (rememberMe) {
+              localStorage.setItem("user", JSON.stringify(data.user));
+              localStorage.setItem("api_key", data.api_key);
+            } else {
+              sessionStorage.setItem("user", JSON.stringify(data.user));
+              sessionStorage.setItem("api_key", data.api_key);
+            }
+
+            showAlert("Login berhasil! Mengalihkan...", "success");
+
+            // Redirect to API keys page
+            setTimeout(() => {
+              window.location.href = "/api-keys";
+            }, 1000);
+          } else {
+            showAlert(
+              data.detail || "Email atau password salah",
+              "error"
+            );
+          }
+        } catch (error) {
+          showAlert("Gagal terhubung ke server. Coba lagi nanti.", "error");
+          console.error("Error:", error);
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Login";
+        }
+      });
+    </script>
+  </body>
+</html>

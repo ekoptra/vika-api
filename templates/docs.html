@@ -1,0 +1,2342 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dokumentasi - Vika SDK</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap");
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, sans-serif;
+      }
+
+      .code-font {
+        font-family: "JetBrains Mono", "Courier New", monospace;
+      }
+
+      .gradient-text {
+        background: linear-gradient(135deg, #0faf65 0%, #059669 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .gradient-bg {
+        background: linear-gradient(135deg, #0faf65 0%, #059669 100%);
+      }
+
+      /* Smooth scroll */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Sidebar active state */
+      .nav-link.active {
+        background: #f0fdf4;
+        color: #059669;
+        border-left: 3px solid #0faf65;
+      }
+
+      /* Code blocks */
+      .code-block {
+        background: #1e293b;
+        border-radius: 0.75rem;
+        overflow: hidden;
+      }
+
+      .code-header {
+        background: #0f172a;
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid #334155;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .copy-btn {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 0.375rem 0.75rem;
+        border-radius: 0.375rem;
+        font-size: 0.875rem;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .copy-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      .copy-btn.copied {
+        background: #10b981;
+        border-color: #10b981;
+      }
+
+      /* Syntax highlighting */
+      .keyword {
+        color: #c792ea;
+      }
+      .string {
+        color: #c3e88d;
+      }
+      .comment {
+        color: #697098;
+        font-style: italic;
+      }
+      .function {
+        color: #82aaff;
+      }
+      .number {
+        color: #f78c6c;
+      }
+      .type {
+        color: #ffcb6b;
+      }
+
+      /* Alert boxes */
+      .alert {
+        padding: 1rem;
+        border-radius: 0.5rem;
+        border-left: 4px solid;
+        margin: 1.5rem 0;
+      }
+
+      .alert-info {
+        background: #dbeafe;
+        border-color: #3b82f6;
+        color: #1e40af;
+      }
+
+      .alert-warning {
+        background: #fef3c7;
+        border-color: #f59e0b;
+        color: #92400e;
+      }
+
+      .alert-success {
+        background: #d1fae5;
+        border-color: #10b981;
+        color: #065f46;
+      }
+
+      .alert-danger {
+        background: #fee2e2;
+        border-color: #ef4444;
+        color: #991b1b;
+      }
+
+      /* Table styles */
+      .docs-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.5rem 0;
+      }
+
+      .docs-table th {
+        background: #f9fafb;
+        padding: 0.75rem 1rem;
+        text-align: left;
+        font-weight: 600;
+        border-bottom: 2px solid #e5e7eb;
+      }
+
+      .docs-table td {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .docs-table code {
+        background: #f3f4f6;
+        padding: 0.125rem 0.375rem;
+        border-radius: 0.25rem;
+        font-size: 0.875em;
+      }
+
+      /* Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #f1f5f9;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #0faf65;
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #059669;
+      }
+
+      /* Image placeholder */
+      .img-placeholder {
+        background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+        border: 2px dashed #d1d5db;
+        border-radius: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #9ca3af;
+        font-size: 0.875rem;
+        min-height: 200px;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex items-center space-x-3">
+            <a href="/" class="flex items-center space-x-3">
+              <div
+                class="w-10 h-10 gradient-bg rounded-lg flex items-center justify-center"
+              >
+                <i class="fas fa-microphone text-white text-lg"></i>
+              </div>
+              <div>
+                <h1 class="text-xl font-bold gradient-text">Vika SDK</h1>
+                <p class="text-xs text-gray-500">Documentation</p>
+              </div>
+            </a>
+          </div>
+
+          <div class="flex items-center space-x-4">
+            <a
+              href="https://github.com/arafat1419/VIKA"
+              target="_blank"
+              class="text-gray-600 hover:text-gray-900"
+            >
+              <i class="fab fa-github text-xl"></i>
+            </a>
+            <a
+              href="/register"
+              class="px-4 py-2 gradient-bg text-white rounded-lg font-semibold text-sm hover:shadow-lg transition"
+            >
+              Get API Key
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="flex gap-8">
+        <!-- Sidebar Navigation -->
+        <aside class="w-64 flex-shrink-0 hidden lg:block">
+          <div class="sticky top-24">
+            <nav class="space-y-1">
+              <!-- Getting Started -->
+              <div class="mb-4">
+                <h3
+                  class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2"
+                >
+                  Getting Started
+                </h3>
+                <a
+                  href="#introduction"
+                  class="nav-link block px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100 transition"
+                  >Introduction</a
+                >
+                <a
+                  href="#installation"
+                  class="nav-link block px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100 transition"
+                  >Installation</a
+                >
+                <a
+                  href="#quick-start"
+                  class="nav-link block px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100 transition"
+                  >Quick Start</a
+                >
+              </div>
+
+              <!-- Core Concepts -->
+              <div class="mb-4">
+                <h3
+                  class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2"
+                >
+                  Core Concepts
+                </h3>
+                <a
+                  href="#configuration"
+                  class="nav-link block px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100 transition"
+                  >Configuration</a
+                >
+                <a
+                  href="#screen-registration"
+                  class="nav-link block px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100 transition"
+                  >Screen Registration</a
+                >
+                <a
+                  href="#deep-links"
+                  class="nav-link block px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100 transition"
+                  >Deep Links</a
+                >
+                <a
+                  href="#voice-ui"
+                  class="nav-link block px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100 transition"
+                  >Voice UI</a
+                >
+              </div>
+
+              <!-- Advanced -->
+              <div class="mb-4">
+                <h3
+                  class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2"
+                >
+                  Advanced
+                </h3>
+                <a
+                  href="#customization"
+                  class="nav-link block px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100 transition"
+                  >UI Customization</a
+                >
+                <a
+                  href="#socket-io"
+                  class="nav-link block px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100 transition"
+                  >Socket.IO Events</a
+                >
+                <a
+                  href="#security"
+                  class="nav-link block px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100 transition"
+                  >Security</a
+                >
+                <a
+                  href="#pii-masking"
+                  class="nav-link block px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100 transition"
+                  >PII Data Masking</a
+                >
+              </div>
+
+              <!-- Reference -->
+              <div class="mb-4">
+                <h3
+                  class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2"
+                >
+                  Reference
+                </h3>
+                <a
+                  href="#api-reference"
+                  class="nav-link block px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100 transition"
+                  >API Reference</a
+                >
+                <a
+                  href="#troubleshooting"
+                  class="nav-link block px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100 transition"
+                  >Troubleshooting</a
+                >
+              </div>
+            </nav>
+          </div>
+        </aside>
+
+        <!-- Documentation Content -->
+        <main class="flex-1 min-w-0">
+          <div class="prose prose-slate max-w-none">
+            <!-- Introduction -->
+            <section id="introduction" class="mb-16">
+              <h1 class="text-4xl font-bold text-gray-900 mb-4">
+                Vika SDK Documentation
+              </h1>
+              <p class="text-xl text-gray-600 mb-6">
+                Android SDK untuk voice-powered navigation dalam aplikasi JKN
+                Mobile. Integrasikan voice assistant dengan mudah menggunakan
+                deep link navigation.
+              </p>
+
+              <div class="grid md:grid-cols-3 gap-4 mb-8">
+                <div class="bg-white p-6 rounded-lg border border-gray-200">
+                  <div class="text-emerald-600 mb-2">
+                    <i class="fas fa-microphone text-2xl"></i>
+                  </div>
+                  <h3 class="font-semibold text-gray-900 mb-1">
+                    Voice Recognition
+                  </h3>
+                  <p class="text-sm text-gray-600">
+                    AI-powered voice recognition dengan akurasi 98%+ untuk
+                    Bahasa Indonesia
+                  </p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg border border-gray-200">
+                  <div class="text-emerald-600 mb-2">
+                    <i class="fas fa-link text-2xl"></i>
+                  </div>
+                  <h3 class="font-semibold text-gray-900 mb-1">
+                    Deep Link Navigation
+                  </h3>
+                  <p class="text-sm text-gray-600">
+                    Navigasi otomatis menggunakan Android Deep Links
+                  </p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg border border-gray-200">
+                  <div class="text-emerald-600 mb-2">
+                    <i class="fas fa-bolt text-2xl"></i>
+                  </div>
+                  <h3 class="font-semibold text-gray-900 mb-1">
+                    Real-time Updates
+                  </h3>
+                  <p class="text-sm text-gray-600">
+                    Socket.IO integration untuk response real-time
+                  </p>
+                </div>
+              </div>
+
+              <div class="alert alert-info">
+                <div class="flex">
+                  <i class="fas fa-info-circle mr-3 mt-1"></i>
+                  <div>
+                    <strong>Minimum Requirements:</strong> Android SDK 26+
+                    (Android 8.0 Oreo), Kotlin 2.0+, Jetpack Compose
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Installation -->
+            <section id="installation" class="mb-16">
+              <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                Installation
+              </h2>
+
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                1. Configure GitHub Packages
+              </h3>
+              <p class="text-gray-700 mb-4">
+                Tambahkan repository GitHub Packages ke
+                <code class="code-font text-sm bg-gray-100 px-2 py-1 rounded"
+                  >settings.gradle.kts</code
+                >:
+              </p>
+
+              <div class="code-block mb-6">
+                <div class="code-header">
+                  <span class="text-white text-sm code-font"
+                    >settings.gradle.kts</span
+                  >
+                  <button class="copy-btn" onclick="copyCode(this, 'code1')">
+                    <i class="fas fa-copy mr-1"></i> Copy
+                  </button>
+                </div>
+                <pre
+                  id="code1"
+                  class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
+                ><code><span class="keyword">dependencyResolutionManagement</span> {
+    <span class="keyword">repositories</span> {
+        google()
+        mavenCentral()
+
+        <span class="keyword">maven</span> {
+            name = <span class="string">"GitHubPackages"</span>
+            url = uri(<span class="string">"https://maven.pkg.github.com/arafat1419/VIKA"</span>)
+            <span class="keyword">credentials</span> {
+                username = project.findProperty(<span class="string">"github.user"</span>) <span class="keyword">as</span> String?
+                password = project.findProperty(<span class="string">"github.token"</span>) <span class="keyword">as</span> String?
+            }
+        }
+    }
+}</code></pre>
+              </div>
+
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                2. Add GitHub Credentials
+              </h3>
+              <p class="text-gray-700 mb-4">
+                Buat atau edit file
+                <code class="code-font text-sm bg-gray-100 px-2 py-1 rounded"
+                  >local.properties</code
+                >
+                di root project:
+              </p>
+
+              <div class="code-block mb-6">
+                <div class="code-header">
+                  <span class="text-white text-sm code-font"
+                    >local.properties</span
+                  >
+                  <button class="copy-btn" onclick="copyCode(this, 'code2')">
+                    <i class="fas fa-copy mr-1"></i> Copy
+                  </button>
+                </div>
+                <pre
+                  id="code2"
+                  class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
+                ><code>github.user=your-github-username
+github.token=your-github-personal-access-token</code></pre>
+              </div>
+
+              <div class="alert alert-warning">
+                <div class="flex">
+                  <i class="fas fa-exclamation-triangle mr-3 mt-1"></i>
+                  <div>
+                    <strong>GitHub Personal Access Token:</strong> Buat token
+                    dengan scope
+                    <code>read:packages</code> di
+                    <a
+                      href="https://github.com/settings/tokens/new"
+                      target="_blank"
+                      class="text-blue-600 underline"
+                      >GitHub Settings</a
+                    >. Jangan commit file <code>local.properties</code> ke git!
+                  </div>
+                </div>
+              </div>
+
+              <h3 class="text-xl font-semibold text-gray-900 mb-3 mt-6">
+                3. Add Dependency
+              </h3>
+              <p class="text-gray-700 mb-4">
+                Tambahkan dependency ke
+                <code class="code-font text-sm bg-gray-100 px-2 py-1 rounded"
+                  >build.gradle.kts</code
+                >
+                (app module):
+              </p>
+
+              <div class="code-block mb-6">
+                <div class="code-header">
+                  <span class="text-white text-sm code-font"
+                    >app/build.gradle.kts</span
+                  >
+                  <button class="copy-btn" onclick="copyCode(this, 'code3')">
+                    <i class="fas fa-copy mr-1"></i> Copy
+                  </button>
+                </div>
+                <pre
+                  id="code3"
+                  class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
+                ><code><span class="keyword">dependencies</span> {
+    <span class="comment">// Vika SDK</span>
+    implementation(<span class="string">"com.vika.sdk:vika-sdk:1.0.1"</span>)
+}</code></pre>
+              </div>
+
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                4. Sync Project
+              </h3>
+              <p class="text-gray-700 mb-4">
+                Klik <strong>Sync Now</strong> atau jalankan:
+              </p>
+
+              <div class="code-block mb-6">
+                <div class="code-header">
+                  <span class="text-white text-sm code-font">Terminal</span>
+                  <button class="copy-btn" onclick="copyCode(this, 'code4')">
+                    <i class="fas fa-copy mr-1"></i> Copy
+                  </button>
+                </div>
+                <pre
+                  id="code4"
+                  class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
+                ><code>./gradlew build</code></pre>
+              </div>
+
+              <div class="alert alert-success">
+                <div class="flex">
+                  <i class="fas fa-check-circle mr-3 mt-1"></i>
+                  <div>
+                    <strong>Installation Complete!</strong> Sekarang Anda siap
+                    untuk mengintegrasikan Vika SDK ke aplikasi JKN Mobile.
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Quick Start -->
+            <section id="quick-start" class="mb-16">
+              <h2 class="text-3xl font-bold text-gray-900 mb-4">Quick Start</h2>
+              <p class="text-gray-700 mb-6">
+                Panduan cepat untuk mengintegrasikan Vika SDK dalam 3 langkah
+                sederhana.
+              </p>
+
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                Step 1: Initialize SDK
+              </h3>
+              <p class="text-gray-700 mb-4">
+                Initialize SDK di
+                <code class="code-font text-sm bg-gray-100 px-2 py-1 rounded"
+                  >Application</code
+                >
+                class:
+              </p>
+
+              <div class="code-block mb-6">
+                <div class="code-header">
+                  <span class="text-white text-sm code-font"
+                    >MyApplication.kt</span
+                  >
+                  <button class="copy-btn" onclick="copyCode(this, 'code5')">
+                    <i class="fas fa-copy mr-1"></i> Copy
+                  </button>
+                </div>
+                <pre
+                  id="code5"
+                  class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
+                ><code><span class="keyword">class</span> <span class="type">MyApplication</span> : <span class="type">Application</span>() {
+
+    <span class="keyword">override fun</span> <span class="function">onCreate</span>() {
+        <span class="keyword">super</span>.onCreate()
+
+        <span class="comment">// Configure SDK</span>
+        <span class="keyword">val</span> config = <span class="type">SDKConfig</span>.<span class="function">Builder</span>(<span class="string">"YOUR_API_KEY"</span>)
+            .<span class="function">debugMode</span>(<span class="type">BuildConfig</span>.DEBUG)
+            .<span class="function">allowedDeepLinkSchemes</span>(<span class="string">"jkn"</span>)
+            .<span class="function">language</span>(<span class="type">VikaLanguage</span>.INDONESIAN)
+            .<span class="function">build</span>()
+
+        <span class="comment">// Initialize SDK</span>
+        <span class="type">VikaSDK</span>.<span class="function">initialize</span>(
+            context = <span class="keyword">this</span>,
+            config = config,
+            callback = <span class="keyword">object</span> : <span class="type">VikaSDK</span>.<span class="type">Companion</span>.<span class="type">InitCallback</span> {
+                <span class="keyword">override fun</span> <span class="function">onSuccess</span>() {
+                    <span class="comment">// SDK ready, register screens</span>
+                    <span class="function">registerScreens</span>()
+                }
+
+                <span class="keyword">override fun</span> <span class="function">onError</span>(error: <span class="type">Throwable</span>) {
+                    <span class="comment">// Handle initialization error</span>
+                    Log.<span class="function">e</span>(<span class="string">"Vika"</span>, <span class="string">"Init failed"</span>, error)
+                }
+            }
+        )
+    }
+}</code></pre>
+              </div>
+
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                Step 2: Register Screens
+              </h3>
+              <p class="text-gray-700 mb-4">
+                Daftarkan semua screen yang bisa diakses via voice:
+              </p>
+
+              <div class="code-block mb-6">
+                <div class="code-header">
+                  <span class="text-white text-sm code-font"
+                    >Screen Registration</span
+                  >
+                  <button class="copy-btn" onclick="copyCode(this, 'code6')">
+                    <i class="fas fa-copy mr-1"></i> Copy
+                  </button>
+                </div>
+                <pre
+                  id="code6"
+                  class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
+                ><code><span class="keyword">private fun</span> <span class="function">registerScreens</span>() {
+    <span class="keyword">val</span> sdk = <span class="type">VikaSDK</span>.<span class="function">getInstance</span>()
+
+    sdk.<span class="function">registerScreens</span>(<span class="function">listOf</span>(
+        <span class="type">ScreenRegistration</span>(
+            screenId = <span class="string">"pendaftaran"</span>,
+            screenName = <span class="string">"Pendaftaran Peserta"</span>,
+            description = <span class="string">"Halaman untuk mendaftar sebagai peserta BPJS Kesehatan baru"</span>,
+            deepLink = <span class="string">"jkn://pendaftaran"</span>,
+            navigationType = <span class="type">NavigationType</span>.<span class="function">DeepLink</span>(<span class="string">"jkn://pendaftaran"</span>),
+            keywords = <span class="function">listOf</span>(<span class="string">"daftar"</span>, <span class="string">"registrasi"</span>, <span class="string">"peserta baru"</span>)
+        ),
+        <span class="type">ScreenRegistration</span>(
+            screenId = <span class="string">"faskes"</span>,
+            screenName = <span class="string">"Daftar Faskes"</span>,
+            description = <span class="string">"Daftar fasilitas kesehatan terdekat"</span>,
+            deepLink = <span class="string">"jkn://faskes"</span>,
+            navigationType = <span class="type">NavigationType</span>.<span class="function">DeepLink</span>(<span class="string">"jkn://faskes"</span>),
+            keywords = <span class="function">listOf</span>(<span class="string">"rumah sakit"</span>, <span class="string">"klinik"</span>, <span class="string">"puskesmas"</span>)
+        )
+    ))
+}</code></pre>
+              </div>
+
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                Step 3: Open Voice UI
+              </h3>
+              <p class="text-gray-700 mb-4">
+                Panggil Voice UI dari button atau menu:
+              </p>
+
+              <div class="code-block mb-6">
+                <div class="code-header">
+                  <span class="text-white text-sm code-font">MainActivity.kt</span>
+                  <button class="copy-btn" onclick="copyCode(this, 'code7')">
+                    <i class="fas fa-copy mr-1"></i> Copy
+                  </button>
+                </div>
+                <pre
+                  id="code7"
+                  class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
+                ><code><span class="comment">// Simple usage</span>
+<span class="type">VikaSDK</span>.<span class="function">getInstance</span>().<span class="function">openVikaSDK</span>(context)
+
+<span class="comment">// With custom options</span>
+<span class="keyword">val</span> options = <span class="type">VikaUIOptions</span>.<span class="function">builder</span>()
+    .<span class="function">displayMode</span>(<span class="type">VikaDisplayMode</span>.BOTTOM_SHEET)
+    .<span class="function">appLogo</span>(R.mipmap.ic_launcher)
+    .<span class="function">appTitle</span>(<span class="string">"JKN Mobile"</span>)
+    .<span class="function">build</span>()
+
+<span class="type">VikaSDK</span>.<span class="function">getInstance</span>().<span class="function">openVikaSDK</span>(context, options)</code></pre>
+              </div>
+
+              <div class="img-placeholder">
+                <div class="text-center">
+                  <i class="fas fa-image text-4xl mb-2"></i>
+                  <p>[Screenshot: Voice UI Interface]</p>
+                </div>
+              </div>
+            </section>
+
+            <!-- Configuration -->
+            <section id="configuration" class="mb-16">
+              <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                Configuration
+              </h2>
+              <p class="text-gray-700 mb-6">
+                Customize SDK behavior dengan berbagai opsi konfigurasi.
+              </p>
+
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                SDKConfig Options
+              </h3>
+
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>apiKey</code></td>
+                    <td>String</td>
+                    <td>-</td>
+                    <td><strong>Required.</strong> API key dari dashboard</td>
+                  </tr>
+                  <tr>
+                    <td><code>minConfidenceThreshold</code></td>
+                    <td>Float</td>
+                    <td>0.7</td>
+                    <td>Minimum confidence (0.0-1.0) untuk navigasi</td>
+                  </tr>
+                  <tr>
+                    <td><code>debugMode</code></td>
+                    <td>Boolean</td>
+                    <td>false</td>
+                    <td>Enable debug logging (disable di production)</td>
+                  </tr>
+                  <tr>
+                    <td><code>analyticsEnabled</code></td>
+                    <td>Boolean</td>
+                    <td>true</td>
+                    <td>Track navigation analytics</td>
+                  </tr>
+                  <tr>
+                    <td><code>timeoutMillis</code></td>
+                    <td>Long</td>
+                    <td>10000</td>
+                    <td>Network request timeout (ms)</td>
+                  </tr>
+                  <tr>
+                    <td><code>allowedDeepLinkSchemes</code></td>
+                    <td>List&lt;String&gt;</td>
+                    <td>[]</td>
+                    <td>Whitelist deep link schemes (e.g., "jkn")</td>
+                  </tr>
+                  <tr>
+                    <td><code>language</code></td>
+                    <td>VikaLanguage</td>
+                    <td>ENGLISH</td>
+                    <td>UI language (ENGLISH / INDONESIAN)</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h3 class="text-xl font-semibold text-gray-900 mb-3 mt-8">
+                Complete Configuration Example
+              </h3>
+
+              <div class="code-block mb-6">
+                <div class="code-header">
+                  <span class="text-white text-sm code-font"
+                    >Advanced Config</span
+                  >
+                  <button class="copy-btn" onclick="copyCode(this, 'code8')">
+                    <i class="fas fa-copy mr-1"></i> Copy
+                  </button>
+                </div>
+                <pre
+                  id="code8"
+                  class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
+                ><code><span class="keyword">val</span> config = <span class="type">SDKConfig</span>.<span class="function">Builder</span>(<span class="string">"your-api-key"</span>)
+    .<span class="function">minConfidenceThreshold</span>(<span class="number">0.8f</span>)
+    .<span class="function">analyticsEnabled</span>(<span class="keyword">true</span>)
+    .<span class="function">debugMode</span>(<span class="type">BuildConfig</span>.DEBUG)
+    .<span class="function">timeout</span>(<span class="number">15000L</span>)
+    .<span class="function">maxRetries</span>(<span class="number">3</span>)
+    .<span class="function">cacheEnabled</span>(<span class="keyword">true</span>)
+    .<span class="function">allowedDeepLinkSchemes</span>(<span class="string">"jkn"</span>, <span class="string">"bpjs"</span>)
+    .<span class="function">language</span>(<span class="type">VikaLanguage</span>.INDONESIAN)
+    .<span class="function">socketReconnectionAttempts</span>(<span class="number">5</span>)
+    .<span class="function">socketReconnectionDelay</span>(<span class="number">2000L</span>)
+    .<span class="function">build</span>()</code></pre>
+              </div>
+            </section>
+
+            <!-- Screen Registration -->
+            <section id="screen-registration" class="mb-16">
+              <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                Screen Registration
+              </h2>
+              <p class="text-gray-700 mb-6">
+                Register screens agar bisa diakses via voice commands. Semakin
+                detail informasi yang diberikan, semakin akurat AI mencocokkan
+                voice command.
+              </p>
+
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                ScreenRegistration Fields
+              </h3>
+
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Field</th>
+                    <th>Type</th>
+                    <th>Required</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>screenId</code></td>
+                    <td>String</td>
+                    <td>✅</td>
+                    <td>Unique identifier (e.g., "pendaftaran")</td>
+                  </tr>
+                  <tr>
+                    <td><code>screenName</code></td>
+                    <td>String</td>
+                    <td>✅</td>
+                    <td>Display name (e.g., "Pendaftaran Peserta")</td>
+                  </tr>
+                  <tr>
+                    <td><code>description</code></td>
+                    <td>String</td>
+                    <td>✅</td>
+                    <td>
+                      Detail apa yang ada di screen ini (untuk AI matching)
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>deepLink</code></td>
+                    <td>String</td>
+                    <td>✅</td>
+                    <td>Deep link URI (e.g., "jkn://pendaftaran")</td>
+                  </tr>
+                  <tr>
+                    <td><code>navigationType</code></td>
+                    <td>NavigationType</td>
+                    <td>✅</td>
+                    <td>Tipe navigasi (DeepLink only untuk saat ini)</td>
+                  </tr>
+                  <tr>
+                    <td><code>keywords</code></td>
+                    <td>List&lt;String&gt;</td>
+                    <td>❌</td>
+                    <td>
+                      Additional keywords untuk improve matching accuracy
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h3 class="text-xl font-semibold text-gray-900 mb-3 mt-8">
+                Best Practices
+              </h3>
+
+              <div class="space-y-4 mb-6">
+                <div class="flex items-start">
+                  <div
+                    class="flex-shrink-0 w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center mr-3"
+                  >
+                    <i class="fas fa-check text-emerald-600"></i>
+                  </div>
+                  <div>
+                    <strong class="text-gray-900"
+                      >Use Descriptive Names:</strong
+                    >
+                    <span class="text-gray-700">
+                      Gunakan nama yang jelas dan mudah dipahami pengguna JKN.
+                    </span>
+                  </div>
+                </div>
+
+                <div class="flex items-start">
+                  <div
+                    class="flex-shrink-0 w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center mr-3"
+                  >
+                    <i class="fas fa-check text-emerald-600"></i>
+                  </div>
+                  <div>
+                    <strong class="text-gray-900"
+                      >Detailed Descriptions:</strong
+                    >
+                    <span class="text-gray-700">
+                      Sertakan detail fitur yang ada di screen untuk improve AI
+                      matching.
+                    </span>
+                  </div>
+                </div>
+
+                <div class="flex items-start">
+                  <div
+                    class="flex-shrink-0 w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center mr-3"
+                  >
+                    <i class="fas fa-check text-emerald-600"></i>
+                  </div>
+                  <div>
+                    <strong class="text-gray-900">Add Keywords:</strong>
+                    <span class="text-gray-700">
+                      Tambahkan variasi kata yang mungkin digunakan user (sinonim,
+                      abbreviasi).
+                    </span>
+                  </div>
+                </div>
+
+                <div class="flex items-start">
+                  <div
+                    class="flex-shrink-0 w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center mr-3"
+                  >
+                    <i class="fas fa-check text-emerald-600"></i>
+                  </div>
+                  <div>
+                    <strong class="text-gray-900">Test Voice Commands:</strong>
+                    <span class="text-gray-700">
+                      Test dengan berbagai cara user mungkin menyebutkan screen.
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                Example: JKN Mobile Screens
+              </h3>
+
+              <div class="code-block mb-6">
+                <div class="code-header">
+                  <span class="text-white text-sm code-font"
+                    >JKN Screen Registration</span
+                  >
+                  <button class="copy-btn" onclick="copyCode(this, 'code9')">
+                    <i class="fas fa-copy mr-1"></i> Copy
+                  </button>
+                </div>
+                <pre
+                  id="code9"
+                  class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
+                ><code><span class="keyword">val</span> jknScreens = <span class="function">listOf</span>(
+    <span class="comment">// Home / Dashboard</span>
+    <span class="type">ScreenRegistration</span>(
+        screenId = <span class="string">"home"</span>,
+        screenName = <span class="string">"Beranda"</span>,
+        description = <span class="string">"Halaman utama JKN Mobile dengan informasi kartu, riwayat kunjungan, dan menu utama"</span>,
+        deepLink = <span class="string">"jkn://home"</span>,
+        navigationType = <span class="type">NavigationType</span>.<span class="function">DeepLink</span>(<span class="string">"jkn://home"</span>),
+        keywords = <span class="function">listOf</span>(<span class="string">"beranda"</span>, <span class="string">"home"</span>, <span class="string">"utama"</span>, <span class="string">"dashboard"</span>)
+    ),
+
+    <span class="comment">// Pendaftaran Peserta</span>
+    <span class="type">ScreenRegistration</span>(
+        screenId = <span class="string">"pendaftaran"</span>,
+        screenName = <span class="string">"Pendaftaran Peserta"</span>,
+        description = <span class="string">"Form pendaftaran peserta BPJS Kesehatan baru dengan upload dokumen KTP dan KK"</span>,
+        deepLink = <span class="string">"jkn://pendaftaran"</span>,
+        navigationType = <span class="type">NavigationType</span>.<span class="function">DeepLink</span>(<span class="string">"jkn://pendaftaran"</span>),
+        keywords = <span class="function">listOf</span>(<span class="string">"daftar"</span>, <span class="string">"registrasi"</span>, <span class="string">"peserta baru"</span>, <span class="string">"buat akun"</span>)
+    ),
+
+    <span class="comment">// Faskes Terdekat</span>
+    <span class="type">ScreenRegistration</span>(
+        screenId = <span class="string">"faskes"</span>,
+        screenName = <span class="string">"Fasilitas Kesehatan"</span>,
+        description = <span class="string">"Cari faskes terdekat: rumah sakit, klinik, puskesmas dengan peta dan navigasi"</span>,
+        deepLink = <span class="string">"jkn://faskes"</span>,
+        navigationType = <span class="type">NavigationType</span>.<span class="function">DeepLink</span>(<span class="string">"jkn://faskes"</span>),
+        keywords = <span class="function">listOf</span>(<span class="string">"faskes"</span>, <span class="string">"rumah sakit"</span>, <span class="string">"rs"</span>, <span class="string">"klinik"</span>, <span class="string">"puskesmas"</span>)
+    ),
+
+    <span class="comment">// Kartu Digital</span>
+    <span class="type">ScreenRegistration</span>(
+        screenId = <span class="string">"kartu"</span>,
+        screenName = <span class="string">"Kartu Digital"</span>,
+        description = <span class="string">"Tampilkan kartu BPJS digital dengan barcode dan informasi peserta"</span>,
+        deepLink = <span class="string">"jkn://kartu"</span>,
+        navigationType = <span class="type">NavigationType</span>.<span class="function">DeepLink</span>(<span class="string">"jkn://kartu"</span>),
+        keywords = <span class="function">listOf</span>(<span class="string">"kartu"</span>, <span class="string">"bpjs"</span>, <span class="string">"digital"</span>, <span class="string">"e-kartu"</span>)
+    ),
+
+    <span class="comment">// Riwayat Kunjungan</span>
+    <span class="type">ScreenRegistration</span>(
+        screenId = <span class="string">"riwayat"</span>,
+        screenName = <span class="string">"Riwayat Kunjungan"</span>,
+        description = <span class="string">"Histori kunjungan ke faskes dengan detail diagnosis dan obat"</span>,
+        deepLink = <span class="string">"jkn://riwayat"</span>,
+        navigationType = <span class="type">NavigationType</span>.<span class="function">DeepLink</span>(<span class="string">"jkn://riwayat"</span>),
+        keywords = <span class="function">listOf</span>(<span class="string">"riwayat"</span>, <span class="string">"history"</span>, <span class="string">"kunjungan"</span>, <span class="string">"rekam medis"</span>)
+    )
+)
+
+<span class="comment">// Register all screens</span>
+<span class="type">VikaSDK</span>.<span class="function">getInstance</span>().<span class="function">registerScreens</span>(jknScreens)</code></pre>
+              </div>
+            </section>
+
+            <!-- Deep Links -->
+            <section id="deep-links" class="mb-16">
+              <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                Deep Link Setup
+              </h2>
+              <p class="text-gray-700 mb-6">
+                Vika SDK menggunakan Android Deep Links untuk navigasi. Anda
+                harus setup deep links di AndroidManifest.xml dan handle intent
+                di Activity.
+              </p>
+
+              <div class="alert alert-warning">
+                <div class="flex">
+                  <i class="fas fa-exclamation-triangle mr-3 mt-1"></i>
+                  <div>
+                    <strong>Important:</strong> Vika SDK saat ini ONLY support
+                    Deep Link navigation. Pastikan semua screen yang didaftarkan
+                    memiliki deep link yang valid.
+                  </div>
+                </div>
+              </div>
+
+              <h3 class="text-xl font-semibold text-gray-900 mb-3 mt-6">
+                1. Configure AndroidManifest.xml
+              </h3>
+              <p class="text-gray-700 mb-4">
+                Tambahkan intent-filter untuk deep links di MainActivity:
+              </p>
+
+              <div class="code-block mb-6">
+                <div class="code-header">
+                  <span class="text-white text-sm code-font"
+                    >AndroidManifest.xml</span
+                  >
+                  <button class="copy-btn" onclick="copyCode(this, 'code10')">
+                    <i class="fas fa-copy mr-1"></i> Copy
+                  </button>
+                </div>
+                <pre
+                  id="code10"
+                  class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
+                ><code><span class="keyword">&lt;activity</span>
+    <span class="type">android:name</span>=<span class="string">".MainActivity"</span>
+    <span class="type">android:exported</span>=<span class="string">"true"</span>
+    <span class="type">android:launchMode</span>=<span class="string">"singleTop"</span><span class="keyword">&gt;</span>
+
+    <span class="comment">&lt;!-- Main launcher intent --&gt;</span>
+    <span class="keyword">&lt;intent-filter&gt;</span>
+        <span class="keyword">&lt;action</span> <span class="type">android:name</span>=<span class="string">"android.intent.action.MAIN"</span> <span class="keyword">/&gt;</span>
+        <span class="keyword">&lt;category</span> <span class="type">android:name</span>=<span class="string">"android.intent.category.LAUNCHER"</span> <span class="keyword">/&gt;</span>
+    <span class="keyword">&lt;/intent-filter&gt;</span>
+
+    <span class="comment">&lt;!-- Deep link intent filter --&gt;</span>
+    <span class="keyword">&lt;intent-filter</span> <span class="type">android:autoVerify</span>=<span class="string">"true"</span><span class="keyword">&gt;</span>
+        <span class="keyword">&lt;action</span> <span class="type">android:name</span>=<span class="string">"android.intent.action.VIEW"</span> <span class="keyword">/&gt;</span>
+
+        <span class="keyword">&lt;category</span> <span class="type">android:name</span>=<span class="string">"android.intent.category.DEFAULT"</span> <span class="keyword">/&gt;</span>
+        <span class="keyword">&lt;category</span> <span class="type">android:name</span>=<span class="string">"android.intent.category.BROWSABLE"</span> <span class="keyword">/&gt;</span>
+
+        <span class="comment">&lt;!-- Your app's deep link scheme --&gt;</span>
+        <span class="keyword">&lt;data</span> <span class="type">android:scheme</span>=<span class="string">"jkn"</span> <span class="keyword">/&gt;</span>
+    <span class="keyword">&lt;/intent-filter&gt;</span>
+
+<span class="keyword">&lt;/activity&gt;</span></code></pre>
+              </div>
+
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                2. Handle Deep Links in Activity
+              </h3>
+              <p class="text-gray-700 mb-4">
+                Handle incoming deep link intents di onCreate dan onNewIntent:
+              </p>
+
+              <div class="code-block mb-6">
+                <div class="code-header">
+                  <span class="text-white text-sm code-font">MainActivity.kt</span>
+                  <button class="copy-btn" onclick="copyCode(this, 'code11')">
+                    <i class="fas fa-copy mr-1"></i> Copy
+                  </button>
+                </div>
+                <pre
+                  id="code11"
+                  class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
+                ><code><span class="keyword">class</span> <span class="type">MainActivity</span> : <span class="type">ComponentActivity</span>() {
+
+    <span class="keyword">override fun</span> <span class="function">onCreate</span>(savedInstanceState: <span class="type">Bundle</span>?) {
+        <span class="keyword">super</span>.onCreate(savedInstanceState)
+
+        <span class="comment">// Handle deep link from onCreate</span>
+        <span class="function">handleIntent</span>(intent)
+    }
+
+    <span class="keyword">override fun</span> <span class="function">onNewIntent</span>(intent: <span class="type">Intent</span>) {
+        <span class="keyword">super</span>.onNewIntent(intent)
+        setIntent(intent)
+
+        <span class="comment">// Handle deep link from onNewIntent (when app is already running)</span>
+        <span class="function">handleIntent</span>(intent)
+    }
+
+    <span class="keyword">private fun</span> <span class="function">handleIntent</span>(intent: <span class="type">Intent</span>) {
+        <span class="keyword">val</span> data: <span class="type">Uri</span>? = intent.data
+
+        <span class="keyword">if</span> (data != <span class="keyword">null</span> && data.scheme == <span class="string">"jkn"</span>) {
+            <span class="comment">// Parse deep link</span>
+            <span class="keyword">when</span> (data.host) {
+                <span class="string">"home"</span> -> <span class="function">navigateToHome</span>()
+                <span class="string">"pendaftaran"</span> -> <span class="function">navigateToPendaftaran</span>()
+                <span class="string">"faskes"</span> -> <span class="function">navigateToFaskes</span>()
+                <span class="string">"kartu"</span> -> <span class="function">navigateToKartu</span>()
+                <span class="string">"riwayat"</span> -> <span class="function">navigateToRiwayat</span>()
+                <span class="keyword">else</span> -> Log.<span class="function">w</span>(<span class="string">"DeepLink"</span>, <span class="string">"Unknown host: </span>${data.host}<span class="string">"</span>)
+            }
+        }
+    }
+
+    <span class="keyword">private fun</span> <span class="function">navigateToHome</span>() {
+        <span class="comment">// Navigate using your navigation framework (Jetpack Navigation, etc)</span>
+        navController.<span class="function">navigate</span>(<span class="string">"home"</span>)
+    }
+
+    <span class="comment">// Implement other navigation methods...</span>
+}</code></pre>
+              </div>
+
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                3. Test Deep Links
+              </h3>
+              <p class="text-gray-700 mb-4">
+                Test deep links menggunakan ADB command:
+              </p>
+
+              <div class="code-block mb-6">
+                <div class="code-header">
+                  <span class="text-white text-sm code-font">Terminal</span>
+                  <button class="copy-btn" onclick="copyCode(this, 'code12')">
+                    <i class="fas fa-copy mr-1"></i> Copy
+                  </button>
+                </div>
+                <pre
+                  id="code12"
+                  class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
+                ><code><span class="comment"># Test deep link to pendaftaran screen</span>
+adb shell am start -W -a android.intent.action.VIEW -d <span class="string">"jkn://pendaftaran"</span> com.jkn.mobile
+
+<span class="comment"># Test deep link to faskes screen</span>
+adb shell am start -W -a android.intent.action.VIEW -d <span class="string">"jkn://faskes"</span> com.jkn.mobile</code></pre>
+              </div>
+
+              <div class="img-placeholder">
+                <div class="text-center">
+                  <i class="fas fa-image text-4xl mb-2"></i>
+                  <p>[Diagram: Deep Link Flow]</p>
+                </div>
+              </div>
+            </section>
+
+            <!-- Voice UI -->
+            <section id="voice-ui" class="mb-16">
+              <h2 class="text-3xl font-bold text-gray-900 mb-4">Voice UI</h2>
+              <p class="text-gray-700 mb-6">
+                Vika SDK menyediakan UI untuk voice recording dengan waveform
+                visualization. UI bisa ditampilkan dalam 3 mode berbeda.
+              </p>
+
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                Display Modes
+              </h3>
+
+              <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-lg border-2 border-gray-200">
+                  <div class="text-emerald-600 mb-3">
+                    <i class="fas fa-expand text-3xl"></i>
+                  </div>
+                  <h4 class="font-bold text-gray-900 mb-2">FULLSCREEN</h4>
+                  <p class="text-sm text-gray-600 mb-4">
+                    Full screen activity dengan branding app dan waveform besar.
+                    Best untuk first-time users.
+                  </p>
+                  <div class="img-placeholder h-32">
+                    <span class="text-xs">[Screenshot Fullscreen]</span>
+                  </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg border-2 border-gray-200">
+                  <div class="text-emerald-600 mb-3">
+                    <i class="fas fa-window-restore text-3xl"></i>
+                  </div>
+                  <h4 class="font-bold text-gray-900 mb-2">DIALOG</h4>
+                  <p class="text-sm text-gray-600 mb-4">
+                    Modal dialog dengan dismiss outside. Compact dan tidak
+                    mengganggu context.
+                  </p>
+                  <div class="img-placeholder h-32">
+                    <span class="text-xs">[Screenshot Dialog]</span>
+                  </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg border-2 border-gray-200">
+                  <div class="text-emerald-600 mb-3">
+                    <i class="fas fa-window-minimize text-3xl"></i>
+                  </div>
+                  <h4 class="font-bold text-gray-900 mb-2">BOTTOM_SHEET</h4>
+                  <p class="text-sm text-gray-600 mb-4">
+                    Bottom sheet yang slide dari bawah. Modern dan familiar untuk
+                    mobile users.
+                  </p>
+                  <div class="img-placeholder h-32">
+                    <span class="text-xs">[Screenshot Bottom Sheet]</span>
+                  </div>
+                </div>
+              </div>
+
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                Usage Examples
+              </h3>
+
+              <div class="code-block mb-6">
+                <div class="code-header">
+                  <span class="text-white text-sm code-font"
+                    >Voice UI Examples</span
+                  >
+                  <button class="copy-btn" onclick="copyCode(this, 'code13')">
+                    <i class="fas fa-copy mr-1"></i> Copy
+                  </button>
+                </div>
+                <pre
+                  id="code13"
+                  class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
+                ><code><span class="comment">// 1. Simple fullscreen (default)</span>
+<span class="type">VikaSDK</span>.<span class="function">getInstance</span>().<span class="function">openVikaSDK</span>(context)
+
+<span class="comment">// 2. Dialog mode with custom branding</span>
+<span class="keyword">val</span> dialogOptions = <span class="type">VikaUIOptions</span>.<span class="function">builder</span>()
+    .<span class="function">displayMode</span>(<span class="type">VikaDisplayMode</span>.DIALOG)
+    .<span class="function">appLogo</span>(R.drawable.ic_jkn_logo)
+    .<span class="function">appTitle</span>(<span class="string">"JKN Mobile"</span>)
+    .<span class="function">dismissOnTouchOutside</span>(<span class="keyword">true</span>)
+    .<span class="function">build</span>()
+
+<span class="type">VikaSDK</span>.<span class="function">getInstance</span>().<span class="function">openVikaSDK</span>(context, dialogOptions)
+
+<span class="comment">// 3. Bottom sheet with custom theme</span>
+<span class="keyword">val</span> customTheme = <span class="type">VikaThemeConfig</span>(
+    primaryColor = <span class="number">0xFF0FAF65</span>,        <span class="comment">// JKN Green</span>
+    secondaryColor = <span class="number">0xFF059669</span>,      <span class="comment">// Darker green</span>
+    backgroundColor = <span class="number">0xFFFFFFFF</span>,     <span class="comment">// White</span>
+    textColor = <span class="number">0xFF1F2937</span>,          <span class="comment">// Dark gray</span>
+    surfaceColor = <span class="number">0xFFF9FAFB</span>,       <span class="comment">// Light gray</span>
+    waveformColor = <span class="number">0xFF0FAF65</span>       <span class="comment">// JKN Green</span>
+)
+
+<span class="keyword">val</span> bottomSheetOptions = <span class="type">VikaUIOptions</span>.<span class="function">builder</span>()
+    .<span class="function">displayMode</span>(<span class="type">VikaDisplayMode</span>.BOTTOM_SHEET)
+    .<span class="function">appLogo</span>(R.drawable.ic_jkn_logo)
+    .<span class="function">appTitle</span>(<span class="string">"Vika Assistant"</span>)
+    .<span class="function">theme</span>(customTheme)
+    .<span class="function">dismissOnTouchOutside</span>(<span class="keyword">true</span>)
+    .<span class="function">build</span>()
+
+<span class="type">VikaSDK</span>.<span class="function">getInstance</span>().<span class="function">openVikaSDK</span>(context, bottomSheetOptions)</code></pre>
+              </div>
+            </section>
+
+            <!-- Customization -->
+            <section id="customization" class="mb-16">
+              <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                UI Customization
+              </h2>
+              <p class="text-gray-700 mb-6">
+                Customize Voice UI agar match dengan branding JKN Mobile
+                menggunakan VikaThemeConfig.
+              </p>
+
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                Theme Configuration
+              </h3>
+
+              <table class="docs-table">
+                <thead>
+                  <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>primaryColor</code></td>
+                    <td>Long (0xFFRRGGBB)</td>
+                    <td>Main brand color untuk buttons & accents</td>
+                  </tr>
+                  <tr>
+                    <td><code>secondaryColor</code></td>
+                    <td>Long (0xFFRRGGBB)</td>
+                    <td>Secondary color untuk highlights</td>
+                  </tr>
+                  <tr>
+                    <td><code>backgroundColor</code></td>
+                    <td>Long (0xFFRRGGBB)</td>
+                    <td>Background color (usually white/dark)</td>
+                  </tr>
+                  <tr>
+                    <td><code>textColor</code></td>
+                    <td>Long (0xFFRRGGBB)</td>
+                    <td>Primary text color</td>
+                  </tr>
+                  <tr>
+                    <td><code>surfaceColor</code></td>
+                    <td>Long (0xFFRRGGBB)</td>
+                    <td>Card/surface background color</td>
+                  </tr>
+                  <tr>
+                    <td><code>waveformColor</code></td>
+                    <td>Long (0xFFRRGGBB)</td>
+                    <td>Waveform visualization color</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h3 class="text-xl font-semibold text-gray-900 mb-3 mt-8">
+                Predefined Themes
+              </h3>
+
+              <div class="code-block mb-6">
+                <div class="code-header">
+                  <span class="text-white text-sm code-font">Theme Presets</span>
+                  <button class="copy-btn" onclick="copyCode(this, 'code14')">
+                    <i class="fas fa-copy mr-1"></i> Copy
+                  </button>
+                </div>
+                <pre
+                  id="code14"
+                  class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
+                ><code><span class="comment">// Default Dark Theme</span>
+<span class="keyword">val</span> darkTheme = <span class="type">VikaThemeConfig</span>.DEFAULT_DARK
+
+<span class="comment">// Default Light Theme</span>
+<span class="keyword">val</span> lightTheme = <span class="type">VikaThemeConfig</span>.DEFAULT_LIGHT
+
+<span class="comment">// JKN Mobile Theme (Custom)</span>
+<span class="keyword">val</span> jknTheme = <span class="type">VikaThemeConfig</span>(
+    primaryColor = <span class="number">0xFF0FAF65</span>,        <span class="comment">// BPJS Green</span>
+    secondaryColor = <span class="number">0xFF059669</span>,
+    backgroundColor = <span class="number">0xFFFFFFFF</span>,
+    textColor = <span class="number">0xFF111827</span>,
+    surfaceColor = <span class="number">0xFFF3F4F6</span>,
+    waveformColor = <span class="number">0xFF0FAF65</span>
+)
+
+<span class="comment">// Apply theme</span>
+<span class="keyword">val</span> options = <span class="type">VikaUIOptions</span>.<span class="function">builder</span>()
+    .<span class="function">theme</span>(jknTheme)
+    .<span class="function">build</span>()
+
+<span class="type">VikaSDK</span>.<span class="function">getInstance</span>().<span class="function">openVikaSDK</span>(context, options)</code></pre>
+              </div>
+            </section>
+
+            <!-- Socket.IO -->
+            <section id="socket-io" class="mb-16">
+              <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                Socket.IO Events
+              </h2>
+              <p class="text-gray-700 mb-6">
+                SDK menggunakan Socket.IO untuk menerima hasil processing voice
+                secara real-time. Anda bisa listen ke events untuk custom
+                handling.
+              </p>
+
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                Listen to Conversation Events
+              </h3>
+
+              <div class="code-block mb-6">
+                <div class="code-header">
+                  <span class="text-white text-sm code-font"
+                    >Conversation Listener</span
+                  >
+                  <button class="copy-btn" onclick="copyCode(this, 'code15')">
+                    <i class="fas fa-copy mr-1"></i> Copy
+                  </button>
+                </div>
+                <pre
+                  id="code15"
+                  class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
+                ><code><span class="keyword">val</span> sdk = <span class="type">VikaSDK</span>.<span class="function">getInstance</span>()
+
+<span class="comment">// Set conversation listener</span>
+sdk.<span class="function">setConversationListener</span>(<span class="keyword">object</span> : <span class="type">VikaSDK</span>.<span class="type">ConversationListener</span> {
+    <span class="keyword">override fun</span> <span class="function">onConversationProcessed</span>(event: <span class="type">ConversationProcessedEvent</span>) {
+        <span class="comment">// Called when voice is processed and navigation result is ready</span>
+        Log.<span class="function">d</span>(<span class="string">"Vika"</span>, <span class="string">"Transcription: </span>${event.transcription}<span class="string">"</span>)
+        Log.<span class="function">d</span>(<span class="string">"Vika"</span>, <span class="string">"Target Screen: </span>${event.navigationData.deepLink}<span class="string">"</span>)
+        Log.<span class="function">d</span>(<span class="string">"Vika"</span>, <span class="string">"Confidence: </span>${event.navigationData.confidence}<span class="string">"</span>)
+
+        <span class="comment">// SDK will automatically navigate via deep link</span>
+        <span class="comment">// But you can add custom logic here</span>
+        <span class="keyword">if</span> (event.navigationData.confidence < <span class="number">0.8f</span>) {
+            <span class="comment">// Show confirmation dialog for low confidence</span>
+            <span class="function">showNavigationConfirmation</span>(event.navigationData)
+        }
+    }
+
+    <span class="keyword">override fun</span> <span class="function">onError</span>(error: <span class="type">VikaError</span>) {
+        <span class="comment">// Handle errors</span>
+        <span class="keyword">when</span> (error) {
+            <span class="keyword">is</span> <span class="type">VikaError</span>.Network -> {
+                Toast.<span class="function">makeText</span>(context, <span class="string">"Network error"</span>, Toast.LENGTH_SHORT).<span class="function">show</span>()
+            }
+            <span class="keyword">is</span> <span class="type">VikaError</span>.SocketConnection -> {
+                Toast.<span class="function">makeText</span>(context, <span class="string">"Connection lost"</span>, Toast.LENGTH_SHORT).<span class="function">show</span>()
+            }
+            <span class="keyword">else</span> -> {
+                Log.<span class="function">e</span>(<span class="string">"Vika"</span>, <span class="string">"Error: </span>${error.message}<span class="string">"</span>)
+            }
+        }
+    }
+})</code></pre>
+              </div>
+
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                Socket Connection Management
+              </h3>
+
+              <div class="code-block mb-6">
+                <div class="code-header">
+                  <span class="text-white text-sm code-font"
+                    >Socket Management</span
+                  >
+                  <button class="copy-btn" onclick="copyCode(this, 'code16')">
+                    <i class="fas fa-copy mr-1"></i> Copy
+                  </button>
+                </div>
+                <pre
+                  id="code16"
+                  class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
+                ><code><span class="keyword">val</span> sdk = <span class="type">VikaSDK</span>.<span class="function">getInstance</span>()
+
+<span class="comment">// Check connection status</span>
+<span class="keyword">if</span> (sdk.<span class="function">isSocketConnected</span>()) {
+    Log.<span class="function">d</span>(<span class="string">"Vika"</span>, <span class="string">"Socket is connected"</span>)
+}
+
+<span class="comment">// Manually disconnect (if needed)</span>
+sdk.<span class="function">disconnectSocket</span>()
+
+<span class="comment">// Manually reconnect</span>
+sdk.<span class="function">reconnectSocket</span>()</code></pre>
+              </div>
+
+              <div class="alert alert-info">
+                <div class="flex">
+                  <i class="fas fa-info-circle mr-3 mt-1"></i>
+                  <div>
+                    <strong>Auto Reconnection:</strong> SDK automatically
+                    attempts to reconnect dengan exponential backoff jika
+                    koneksi terputus. Anda bisa configure max attempts di
+                    SDKConfig.
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Security -->
+            <section id="security" class="mb-16">
+              <h2 class="text-3xl font-bold text-gray-900 mb-4">Security</h2>
+              <p class="text-gray-700 mb-6">
+                Vika SDK implements multiple security layers untuk protect data
+                dan prevent unauthorized access.
+              </p>
+
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                Security Features
+              </h3>
+
+              <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-lg border border-gray-200">
+                  <div class="flex items-start mb-3">
+                    <div
+                      class="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center mr-3 flex-shrink-0"
+                    >
+                      <i class="fas fa-lock text-emerald-600"></i>
+                    </div>
+                    <div>
+                      <h4 class="font-bold text-gray-900 mb-1">
+                        AES-256 Encryption
+                      </h4>
+                      <p class="text-sm text-gray-600">
+                        Semua data sensitive di-encrypt dengan AES-256-CBC
+                        sebelum dikirim ke server.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg border border-gray-200">
+                  <div class="flex items-start mb-3">
+                    <div
+                      class="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center mr-3 flex-shrink-0"
+                    >
+                      <i class="fas fa-shield-alt text-emerald-600"></i>
+                    </div>
+                    <div>
+                      <h4 class="font-bold text-gray-900 mb-1">
+                        Certificate Pinning
+                      </h4>
+                      <p class="text-sm text-gray-600">
+                        Optional certificate pinning untuk prevent
+                        man-in-the-middle attacks.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg border border-gray-200">
+                  <div class="flex items-start mb-3">
+                    <div
+                      class="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center mr-3 flex-shrink-0"
+                    >
+                      <i class="fas fa-fingerprint text-emerald-600"></i>
+                    </div>
+                    <div>
+                      <h4 class="font-bold text-gray-900 mb-1">
+                        Request Signing
+                      </h4>
+                      <p class="text-sm text-gray-600">
+                        Semua requests di-sign dengan HMAC-SHA256 untuk verify
+                        authenticity.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg border border-gray-200">
+                  <div class="flex items-start mb-3">
+                    <div
+                      class="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center mr-3 flex-shrink-0"
+                    >
+                      <i class="fas fa-link text-emerald-600"></i>
+                    </div>
+                    <div>
+                      <h4 class="font-bold text-gray-900 mb-1">
+                        Deep Link Validation
+                      </h4>
+                      <p class="text-sm text-gray-600">
+                        Whitelist allowed schemes untuk prevent malicious deep
+                        links.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                Security Best Practices
+              </h3>
+
+              <div class="space-y-4 mb-6">
+                <div class="flex items-start">
+                  <div
+                    class="flex-shrink-0 w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center mr-3 mt-1"
+                  >
+                    <i class="fas fa-shield-alt text-emerald-600"></i>
+                  </div>
+                  <div>
+                    <strong class="text-gray-900"
+                      >Automatic PII Data Masking:</strong
+                    >
+                    <span class="text-gray-700">
+                      SDK otomatis melakukan masking terhadap PII (Personally Identifiable Information) pada hasil speech-to-text dan deeplink sebelum dikirim ke LLM. Data sensitif peserta BPJS seperti NIK, nomor kartu, nama lengkap, dan informasi pribadi lainnya akan di-anonymize, menjamin privasi data tetap terjaga.
+                    </span>
+                  </div>
+                </div>
+
+                <div class="flex items-start">
+                  <div
+                    class="flex-shrink-0 w-8 h-8 bg-red-100 rounded-full flex items-center justify-center mr-3 mt-1"
+                  >
+                    <i class="fas fa-exclamation-triangle text-red-600"></i>
+                  </div>
+                  <div>
+                    <strong class="text-gray-900"
+                      >Never Hardcode API Keys:</strong
+                    >
+                    <span class="text-gray-700">
+                      Store API keys in BuildConfig atau encrypted storage,
+                      jangan di hardcode di code.
+                    </span>
+                  </div>
+                </div>
+
+                <div class="flex items-start">
+                  <div
+                    class="flex-shrink-0 w-8 h-8 bg-red-100 rounded-full flex items-center justify-center mr-3 mt-1"
+                  >
+                    <i class="fas fa-exclamation-triangle text-red-600"></i>
+                  </div>
+                  <div>
+                    <strong class="text-gray-900">Disable Debug Mode:</strong>
+                    <span class="text-gray-700">
+                      Set debugMode = false di production builds untuk prevent
+                      data leaks.
+                    </span>
+                  </div>
+                </div>
+
+                <div class="flex items-start">
+                  <div
+                    class="flex-shrink-0 w-8 h-8 bg-red-100 rounded-full flex items-center justify-center mr-3 mt-1"
+                  >
+                    <i class="fas fa-exclamation-triangle text-red-600"></i>
+                  </div>
+                  <div>
+                    <strong class="text-gray-900"
+                      >Validate Deep Link Schemes:</strong
+                    >
+                    <span class="text-gray-700">
+                      Always set allowedDeepLinkSchemes untuk whitelist schemes
+                      yang valid.
+                    </span>
+                  </div>
+                </div>
+
+                <div class="flex items-start">
+                  <div
+                    class="flex-shrink-0 w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center mr-3 mt-1"
+                  >
+                    <i class="fas fa-check text-emerald-600"></i>
+                  </div>
+                  <div>
+                    <strong class="text-gray-900">Use ProGuard:</strong>
+                    <span class="text-gray-700">
+                      SDK includes ProGuard rules. Enable minifyEnabled di
+                      release builds.
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="code-block mb-6">
+                <div class="code-header">
+                  <span class="text-white text-sm code-font"
+                    >Security Config Example</span
+                  >
+                  <button class="copy-btn" onclick="copyCode(this, 'code17')">
+                    <i class="fas fa-copy mr-1"></i> Copy
+                  </button>
+                </div>
+                <pre
+                  id="code17"
+                  class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
+                ><code><span class="comment">// Secure configuration for production</span>
+<span class="keyword">val</span> secureConfig = <span class="type">SDKConfig</span>.<span class="function">Builder</span>(<span class="type">BuildConfig</span>.VIKA_API_KEY)
+    .<span class="function">debugMode</span>(<span class="keyword">false</span>)  <span class="comment">// Disable debug logs</span>
+    .<span class="function">allowedDeepLinkSchemes</span>(<span class="string">"jkn"</span>)  <span class="comment">// Only allow "jkn://" scheme</span>
+    .<span class="function">certificatePinning</span>(  <span class="comment">// Optional: Pin server certificate</span>
+        <span class="string">"sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="</span>
+    )
+    .<span class="function">build</span>()
+
+<span class="comment">// Store API key in BuildConfig (build.gradle.kts)</span>
+<span class="comment">// buildConfigField("String", "VIKA_API_KEY", "\"${project.findProperty("vika.api.key")}\")"</span></code></pre>
+              </div>
+            </section>
+
+            <!-- PII Data Masking -->
+            <section id="pii-masking" class="mb-16">
+              <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                PII Data Masking
+              </h2>
+              <p class="text-gray-700 mb-6">
+                Vika SDK secara otomatis melindungi data sensitif peserta BPJS dengan melakukan masking terhadap PII (Personally Identifiable Information) sebelum data dikirim ke LLM untuk processing.
+              </p>
+
+              <div class="alert alert-info mb-6">
+                <i class="fas fa-info-circle mr-2"></i>
+                <strong>Keamanan Data BPJS Terjamin:</strong>
+                <span>
+                  Semua data sensitif peserta seperti NIK, nomor kartu BPJS, nama lengkap, dan informasi pribadi lainnya akan di-anonymize secara otomatis sebelum diproses oleh AI.
+                </span>
+              </div>
+
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                Bagaimana Cara Kerjanya?
+              </h3>
+
+              <div class="space-y-4 mb-6">
+                <div class="flex items-start">
+                  <div class="flex-shrink-0 w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center mr-3 mt-1">
+                    <span class="text-emerald-600 font-bold">1</span>
+                  </div>
+                  <div>
+                    <strong class="text-gray-900">Speech-to-Text Processing:</strong>
+                    <p class="text-gray-700">
+                      Hasil konversi voice input menjadi text akan dideteksi dan di-mask PII-nya terlebih dahulu.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="flex items-start">
+                  <div class="flex-shrink-0 w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center mr-3 mt-1">
+                    <span class="text-emerald-600 font-bold">2</span>
+                  </div>
+                  <div>
+                    <strong class="text-gray-900">Deeplink Masking:</strong>
+                    <p class="text-gray-700">
+                      Deeplink yang akan dikirim ke LLM juga sudah di-mask untuk menghilangkan parameter sensitif.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="flex items-start">
+                  <div class="flex-shrink-0 w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center mr-3 mt-1">
+                    <span class="text-emerald-600 font-bold">3</span>
+                  </div>
+                  <div>
+                    <strong class="text-gray-900">LLM Processing:</strong>
+                    <p class="text-gray-700">
+                      Data yang sudah di-anonymize dikirim ke LLM untuk menentukan intent dan deeplink yang sesuai.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="flex items-start">
+                  <div class="flex-shrink-0 w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center mr-3 mt-1">
+                    <span class="text-emerald-600 font-bold">4</span>
+                  </div>
+                  <div>
+                    <strong class="text-gray-900">Original Data Preserved:</strong>
+                    <p class="text-gray-700">
+                      Data asli tetap tersimpan di device dan tidak pernah terekspos ke external services.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                Jenis Data yang Di-Mask
+              </h3>
+
+              <div class="bg-gray-50 rounded-lg p-6 mb-6">
+                <div class="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <h4 class="font-semibold text-gray-900 mb-2">
+                      <i class="fas fa-id-card text-emerald-600 mr-2"></i>
+                      Identitas Pribadi
+                    </h4>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                      <li>NIK (Nomor Induk Kependudukan)</li>
+                      <li>Nomor Kartu BPJS</li>
+                      <li>Nama Lengkap</li>
+                      <li>Tanggal Lahir</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 class="font-semibold text-gray-900 mb-2">
+                      <i class="fas fa-phone text-emerald-600 mr-2"></i>
+                      Informasi Kontak
+                    </h4>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                      <li>Nomor Telepon</li>
+                      <li>Email Address</li>
+                      <li>Alamat Lengkap</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 class="font-semibold text-gray-900 mb-2">
+                      <i class="fas fa-hospital text-emerald-600 mr-2"></i>
+                      Data Kesehatan
+                    </h4>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                      <li>Nomor Rekam Medis</li>
+                      <li>Diagnosis</li>
+                      <li>Riwayat Penyakit</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 class="font-semibold text-gray-900 mb-2">
+                      <i class="fas fa-credit-card text-emerald-600 mr-2"></i>
+                      Informasi Finansial
+                    </h4>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                      <li>Nomor Rekening</li>
+                      <li>Informasi Pembayaran</li>
+                      <li>Iuran BPJS</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                Contoh Masking
+              </h3>
+
+              <div class="code-block mb-4">
+                <div class="code-header">
+                  <span class="text-white text-sm code-font">Before Masking (Original Voice Input)</span>
+                </div>
+                <pre class="p-4 text-sm text-gray-300 overflow-x-auto code-font"><code><span class="comment">// User voice input hasil speech-to-text</span>
+<span class="string">"Saya mau cek status klaim untuk nomor kartu BPJS 0001234567890 atas nama Budi Santoso NIK 3201012345678901"</span></code></pre>
+              </div>
+
+              <div class="flex justify-center mb-4">
+                <div class="text-emerald-600">
+                  <i class="fas fa-arrow-down text-2xl"></i>
+                </div>
+              </div>
+
+              <div class="code-block mb-6">
+                <div class="code-header">
+                  <span class="text-white text-sm code-font">After Masking (Sent to LLM)</span>
+                </div>
+                <pre class="p-4 text-sm text-gray-300 overflow-x-auto code-font"><code><span class="comment">// Data yang dikirim ke LLM sudah di-anonymize</span>
+<span class="string">"Saya mau cek status klaim untuk nomor kartu BPJS [MASKED_BPJS_NUMBER] atas nama [MASKED_NAME] NIK [MASKED_NIK]"</span>
+
+<span class="comment">// LLM hanya menerima intent, bukan data sensitif</span>
+<span class="comment">// LLM Response: "navigate to status klaim page"</span>
+
+<span class="comment">// Deeplink yang di-return:</span>
+<span class="string">"jkn://status-klaim"</span>  <span class="comment">// Tanpa parameter sensitif</span></code></pre>
+              </div>
+
+              <div class="alert alert-success">
+                <i class="fas fa-check-circle mr-2"></i>
+                <strong>Zero Configuration Required:</strong>
+                <span>
+                  PII Masking bekerja otomatis tanpa perlu konfigurasi tambahan. SDK akan mendeteksi dan mem-protect data sensitif secara intelligent.
+                </span>
+              </div>
+            </section>
+
+            <!-- API Reference -->
+            <section id="api-reference" class="mb-16">
+              <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                API Reference
+              </h2>
+              <p class="text-gray-700 mb-6">
+                Complete reference untuk semua public APIs di Vika SDK.
+              </p>
+
+              <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                VikaSDK Class
+              </h3>
+
+              <div class="bg-gray-50 rounded-lg p-6 mb-6">
+                <h4 class="font-bold text-gray-900 mb-4">
+                  Static Methods (Companion)
+                </h4>
+
+                <div class="space-y-6">
+                  <div>
+                    <div class="code-font text-sm bg-white p-3 rounded border border-gray-200 mb-2">
+                      fun initialize(context: Context, config: SDKConfig,
+                      callback: InitCallback?)
+                    </div>
+                    <p class="text-sm text-gray-600">
+                      Initialize SDK with config. Must be called before using
+                      other methods.
+                    </p>
+                  </div>
+
+                  <div>
+                    <div class="code-font text-sm bg-white p-3 rounded border border-gray-200 mb-2">
+                      fun getInstance(): VikaSDK
+                    </div>
+                    <p class="text-sm text-gray-600">
+                      Get singleton SDK instance. Throws exception if not
+                      initialized.
+                    </p>
+                  </div>
+
+                  <div>
+                    <div class="code-font text-sm bg-white p-3 rounded border border-gray-200 mb-2">
+                      fun isInitialized(): Boolean
+                    </div>
+                    <p class="text-sm text-gray-600">
+                      Check if SDK has been initialized.
+                    </p>
+                  </div>
+
+                  <div>
+                    <div class="code-font text-sm bg-white p-3 rounded border border-gray-200 mb-2">
+                      fun destroy()
+                    </div>
+                    <p class="text-sm text-gray-600">
+                      Destroy SDK instance and clean up resources.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-gray-50 rounded-lg p-6 mb-6">
+                <h4 class="font-bold text-gray-900 mb-4">Instance Methods</h4>
+
+                <div class="space-y-6">
+                  <div>
+                    <div class="code-font text-sm bg-white p-3 rounded border border-gray-200 mb-2">
+                      fun registerScreen(screen: ScreenRegistration, callback:
+                      RegisterCallback?): VikaSDK
+                    </div>
+                    <p class="text-sm text-gray-600">
+                      Register single screen for voice navigation.
+                    </p>
+                  </div>
+
+                  <div>
+                    <div class="code-font text-sm bg-white p-3 rounded border border-gray-200 mb-2">
+                      fun registerScreens(screens: List&lt;ScreenRegistration&gt;,
+                      callback: RegisterCallback?): VikaSDK
+                    </div>
+                    <p class="text-sm text-gray-600">
+                      Register multiple screens at once.
+                    </p>
+                  </div>
+
+                  <div>
+                    <div class="code-font text-sm bg-white p-3 rounded border border-gray-200 mb-2">
+                      fun openVikaSDK(context: Context)
+                    </div>
+                    <p class="text-sm text-gray-600">
+                      Open Voice UI with default options (fullscreen).
+                    </p>
+                  </div>
+
+                  <div>
+                    <div class="code-font text-sm bg-white p-3 rounded border border-gray-200 mb-2">
+                      fun openVikaSDK(context: Context, options: VikaUIOptions)
+                    </div>
+                    <p class="text-sm text-gray-600">
+                      Open Voice UI with custom display mode and theme.
+                    </p>
+                  </div>
+
+                  <div>
+                    <div class="code-font text-sm bg-white p-3 rounded border border-gray-200 mb-2">
+                      fun setConversationListener(listener: ConversationListener?)
+                    </div>
+                    <p class="text-sm text-gray-600">
+                      Set listener to receive real-time conversation results via
+                      Socket.IO.
+                    </p>
+                  </div>
+
+                  <div>
+                    <div class="code-font text-sm bg-white p-3 rounded border border-gray-200 mb-2">
+                      fun isBackendReady(): Boolean
+                    </div>
+                    <p class="text-sm text-gray-600">
+                      Check if backend initialization was successful.
+                    </p>
+                  </div>
+
+                  <div>
+                    <div class="code-font text-sm bg-white p-3 rounded border border-gray-200 mb-2">
+                      fun isSocketConnected(): Boolean
+                    </div>
+                    <p class="text-sm text-gray-600">
+                      Check if Socket.IO is currently connected.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="alert alert-info">
+                <div class="flex">
+                  <i class="fas fa-book mr-3 mt-1"></i>
+                  <div>
+                    <strong>Full API Documentation:</strong> Lihat KDoc comments
+                    di source code untuk detailed documentation setiap method dan
+                    parameter.
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Troubleshooting -->
+            <section id="troubleshooting" class="mb-16">
+              <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                Troubleshooting
+              </h2>
+              <p class="text-gray-700 mb-6">
+                Solusi untuk common issues yang mungkin Anda temui.
+              </p>
+
+              <div class="space-y-6">
+                <!-- Issue 1 -->
+                <div class="bg-white rounded-lg border border-gray-200 p-6">
+                  <div class="flex items-start mb-3">
+                    <div
+                      class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center mr-3 flex-shrink-0"
+                    >
+                      <i class="fas fa-exclamation-circle text-red-600"></i>
+                    </div>
+                    <div class="flex-1">
+                      <h4 class="font-bold text-gray-900 mb-2">
+                        SDK Initialization Failed
+                      </h4>
+                      <p class="text-sm text-gray-600 mb-3">
+                        Error: "Backend initialization failed" atau timeout
+                      </p>
+                      <div class="bg-gray-50 rounded p-4">
+                        <p class="font-semibold text-sm text-gray-900 mb-2">
+                          Solutions:
+                        </p>
+                        <ul class="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                          <li>Check internet connection</li>
+                          <li>Verify API key is valid (get from dashboard)</li>
+                          <li>Check if backend server is running</li>
+                          <li>Increase timeout: .timeout(30000L)</li>
+                          <li>Check Logcat for detailed error</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Issue 2 -->
+                <div class="bg-white rounded-lg border border-gray-200 p-6">
+                  <div class="flex items-start mb-3">
+                    <div
+                      class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center mr-3 flex-shrink-0"
+                    >
+                      <i class="fas fa-exclamation-circle text-red-600"></i>
+                    </div>
+                    <div class="flex-1">
+                      <h4 class="font-bold text-gray-900 mb-2">
+                        Deep Link Not Working
+                      </h4>
+                      <p class="text-sm text-gray-600 mb-3">
+                        Navigation tidak trigger setelah voice command
+                      </p>
+                      <div class="bg-gray-50 rounded p-4">
+                        <p class="font-semibold text-sm text-gray-900 mb-2">
+                          Solutions:
+                        </p>
+                        <ul class="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                          <li>Verify intent-filter in AndroidManifest.xml</li>
+                          <li>
+                            Check launchMode is "singleTop" for MainActivity
+                          </li>
+                          <li>
+                            Implement onNewIntent() to handle deep links when app
+                            is running
+                          </li>
+                          <li>
+                            Test deep link with ADB: adb shell am start -d
+                            "jkn://screen"
+                          </li>
+                          <li>
+                            Verify scheme is in allowedDeepLinkSchemes config
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Issue 3 -->
+                <div class="bg-white rounded-lg border border-gray-200 p-6">
+                  <div class="flex items-start mb-3">
+                    <div
+                      class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center mr-3 flex-shrink-0"
+                    >
+                      <i class="fas fa-exclamation-circle text-red-600"></i>
+                    </div>
+                    <div class="flex-1">
+                      <h4 class="font-bold text-gray-900 mb-2">
+                        Voice Not Recognized Accurately
+                      </h4>
+                      <p class="text-sm text-gray-600 mb-3">
+                        AI salah mencocokkan screen atau confidence terlalu
+                        rendah
+                      </p>
+                      <div class="bg-gray-50 rounded p-4">
+                        <p class="font-semibold text-sm text-gray-900 mb-2">
+                          Solutions:
+                        </p>
+                        <ul class="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                          <li>
+                            Add more detailed descriptions to ScreenRegistration
+                          </li>
+                          <li>Add more keywords (synonyms, variations)</li>
+                          <li>
+                            Lower minConfidenceThreshold if too strict (default:
+                            0.7)
+                          </li>
+                          <li>Test with clear audio in quiet environment</li>
+                          <li>Check language setting matches voice input</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Issue 4 -->
+                <div class="bg-white rounded-lg border border-gray-200 p-6">
+                  <div class="flex items-start mb-3">
+                    <div
+                      class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center mr-3 flex-shrink-0"
+                    >
+                      <i class="fas fa-exclamation-circle text-red-600"></i>
+                    </div>
+                    <div class="flex-1">
+                      <h4 class="font-bold text-gray-900 mb-2">
+                        Socket Connection Lost
+                      </h4>
+                      <p class="text-sm text-gray-600 mb-3">
+                        Real-time updates tidak diterima
+                      </p>
+                      <div class="bg-gray-50 rounded p-4">
+                        <p class="font-semibold text-sm text-gray-900 mb-2">
+                          Solutions:
+                        </p>
+                        <ul class="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                          <li>SDK auto-reconnects, wait for reconnection</li>
+                          <li>
+                            Check isSocketConnected() to verify connection status
+                          </li>
+                          <li>
+                            Increase reconnection attempts:
+                            .socketReconnectionAttempts(10)
+                          </li>
+                          <li>Check network stability</li>
+                          <li>
+                            Call reconnectSocket() to manually trigger reconnect
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Issue 5 -->
+                <div class="bg-white rounded-lg border border-gray-200 p-6">
+                  <div class="flex items-start mb-3">
+                    <div
+                      class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center mr-3 flex-shrink-0"
+                    >
+                      <i class="fas fa-exclamation-circle text-red-600"></i>
+                    </div>
+                    <div class="flex-1">
+                      <h4 class="font-bold text-gray-900 mb-2">
+                        Dependency Resolution Failed
+                      </h4>
+                      <p class="text-sm text-gray-600 mb-3">
+                        Gradle sync error: "Could not resolve com.vika.sdk:vika-sdk"
+                      </p>
+                      <div class="bg-gray-50 rounded p-4">
+                        <p class="font-semibold text-sm text-gray-900 mb-2">
+                          Solutions:
+                        </p>
+                        <ul class="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                          <li>
+                            Verify GitHub credentials in local.properties are
+                            correct
+                          </li>
+                          <li>
+                            Generate new GitHub token with read:packages scope
+                          </li>
+                          <li>Check maven repository URL is correct</li>
+                          <li>Try ./gradlew build --refresh-dependencies</li>
+                          <li>Clear Gradle cache: ./gradlew clean</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-emerald-50 rounded-lg p-6 mt-8 border border-emerald-200">
+                <div class="flex items-start">
+                  <div
+                    class="flex-shrink-0 w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center mr-4"
+                  >
+                    <i class="fas fa-life-ring text-white"></i>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-gray-900 mb-2">
+                      Need More Help?
+                    </h4>
+                    <p class="text-gray-700 mb-3">
+                      Jika masih ada masalah, hubungi support team kami:
+                    </p>
+                    <div class="space-y-2">
+                      <div>
+                        <a
+                          href="https://github.com/arafat1419/VIKA/issues"
+                          target="_blank"
+                          class="text-emerald-600 hover:text-emerald-700 font-medium"
+                        >
+                          <i class="fab fa-github mr-2"></i>GitHub Issues
+                        </a>
+                      </div>
+                      <div>
+                        <a
+                          href="mailto:support@vika-sdk.com"
+                          class="text-emerald-600 hover:text-emerald-700 font-medium"
+                        >
+                          <i class="fas fa-envelope mr-2"></i>Email Support
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 mt-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-4 gap-8">
+          <div class="col-span-2">
+            <div class="flex items-center space-x-3 mb-4">
+              <div
+                class="w-10 h-10 gradient-bg rounded-lg flex items-center justify-center"
+              >
+                <i class="fas fa-microphone text-white"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold">Vika SDK</h3>
+                <p class="text-sm text-gray-400">New Generation</p>
+              </div>
+            </div>
+            <p class="text-gray-400 text-sm">
+              Voice Navigation SDK untuk Android JKN Mobile. Powerful,
+              secure, dan mudah diintegrasikan.
+            </p>
+          </div>
+
+          <div>
+            <h4 class="font-semibold mb-4">Resources</h4>
+            <ul class="space-y-2 text-sm text-gray-400">
+              <li>
+                <a href="#introduction" class="hover:text-white">Documentation</a>
+              </li>
+              <li><a href="/api/docs" class="hover:text-white">API Reference</a></li>
+              <li>
+                <a
+                  href="https://github.com/arafat1419/VIKA"
+                  target="_blank"
+                  class="hover:text-white"
+                  >GitHub</a
+                >
+              </li>
+              <li><a href="#" class="hover:text-white">Changelog</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="font-semibold mb-4">Support</h4>
+            <ul class="space-y-2 text-sm text-gray-400">
+              <li><a href="#troubleshooting" class="hover:text-white">Help Center</a></li>
+              <li>
+                <a
+                  href="https://github.com/arafat1419/VIKA/issues"
+                  target="_blank"
+                  class="hover:text-white"
+                  >Report Issue</a
+                >
+              </li>
+              <li><a href="mailto:support@vika-sdk.com" class="hover:text-white">Contact Us</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
+          <p>&copy; 2025 Vika SDK. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Copy code functionality
+      function copyCode(button, codeId) {
+        const codeElement = document.getElementById(codeId);
+        const code = codeElement.textContent;
+
+        navigator.clipboard.writeText(code).then(() => {
+          button.innerHTML = '<i class="fas fa-check mr-1"></i> Copied!';
+          button.classList.add("copied");
+
+          setTimeout(() => {
+            button.innerHTML = '<i class="fas fa-copy mr-1"></i> Copy';
+            button.classList.remove("copied");
+          }, 2000);
+        });
+      }
+
+      // Active navigation highlighting
+      const observerOptions = {
+        threshold: 0.5,
+        rootMargin: "-20% 0px -35% 0px",
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute("id");
+            document.querySelectorAll(".nav-link").forEach((link) => {
+              link.classList.remove("active");
+              if (link.getAttribute("href") === `#${id}`) {
+                link.classList.add("active");
+              }
+            });
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll("section[id]").forEach((section) => {
+        observer.observe(section);
+      });
+
+      // Smooth scroll
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

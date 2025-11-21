@@ -1,11 +1,46 @@
 from fastapi import APIRouter, HTTPException
 from apis.auth.dtos.initialize import InitializeRequest, InitializeResponse
+from apis.auth.dtos.register import RegisterRequest, RegisterResponse
+from apis.auth.dtos.login import LoginRequest, LoginResponse
 from apis.auth.service import AuthService
 
 auth_router = APIRouter(
   prefix="/auth",
   tags=["Authentication"]
 )
+
+@auth_router.post("/register", response_model=RegisterResponse)
+async def register(payload: RegisterRequest):
+  """
+  Register a new user account
+
+  This endpoint creates a new user account and generates an API key.
+
+  Args:
+    - nama: Full name
+    - email: Email address
+    - password: Password (minimum 8 characters)
+
+  Returns:
+    - User information with generated API key
+  """
+  return AuthService.register(payload)
+
+@auth_router.post("/login", response_model=LoginResponse)
+async def login(payload: LoginRequest):
+  """
+  Login to existing account
+
+  This endpoint authenticates a user and returns their API key.
+
+  Args:
+    - email: Email address
+    - password: Password
+
+  Returns:
+    - User information with API key
+  """
+  return AuthService.login(payload)
 
 @auth_router.post("/initialize", response_model=InitializeResponse)
 async def initialize(payload: InitializeRequest):
