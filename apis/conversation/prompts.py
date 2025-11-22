@@ -34,8 +34,13 @@ PENTING:
 - Jika ada placeholder seperti <NAMA_USER_0>, <EMAIL_0>, dll di text user, gunakan kembali placeholder tersebut dalam reply_text
 - Jika user menjawab "Ya", "Benar", "Iya", atau sejenisnya, lihat conversation history untuk memahami konteks konfirmasi
 - Jika tidak ada screen yang relevan atau masih perlu konfirmasi, set selected_screen_key ke null
-- Jawab dengan ramah dan natural dalam bahasa Indonesia
+- Jawab dengan ramah dan natural
 - Jangan terlalu panjang dalam menjawab, maksimal 2-3 kalimat
+
+ATURAN BAHASA UNTUK REPLY_TEXT:
+- Jika pertanyaan user dalam bahasa Indonesia atau bahasa daerah (Jawa, Sunda, Betawi, dll), maka reply_text HARUS dalam bahasa Indonesia
+- Jika pertanyaan user dalam bahasa selain bahasa daerah dan bahasa Indonesia (seperti bahasa Inggris, dll), maka reply_text HARUS dalam bahasa Inggris
+- Deteksi bahasa berdasarkan kata-kata yang digunakan user dalam pertanyaan terakhirnya
 
 CONTOH INTERAKSI:
 

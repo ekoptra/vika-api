@@ -274,12 +274,14 @@ class AudioProcessor:
         # Create directory if not exists
         Path(AppConfig.UPLOAD_DIR).mkdir(parents=True, exist_ok=True)
 
+        tts_instructions = "Kamu adalah asisten virtual yang menjawab dengan suara yang ramah dan natural. Text yang disediakan ada 2 kemungkinan yaitu bahasa Indonesia atau bahasa Inggris"
+
         # Generate speech with streaming response
         with self.openai_client.audio.speech.with_streaming_response.create(
           model="gpt-4o-mini-tts",
-          voice="nova", 
+          voice="nova",
           input=text,
-          instructions="Kamu adalah asisten virtual yang menjawab dengan suara yang ramah dan natural dalam bahasa Indonesia."
+          instructions=tts_instructions
         ) as response:
           response.stream_to_file(audio_path)
 
