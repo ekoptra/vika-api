@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Analitik - Vika API</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+        background: linear-gradient(135deg, #0FAF65 0%, #059669 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .navbar {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 1rem 0;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #0FAF65 0%, #059669 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+      }
+
+      .nav-link {
+        color: #374151;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+
+      .nav-link:hover {
+        color: #0FAF65;
+      }
+
+      .nav-link.active {
+        color: #0FAF65;
+        font-weight: 600;
+      }
+
+      .logout-btn {
+        padding: 0.5rem 1.5rem;
+        background: linear-gradient(135deg, #0FAF65 0%, #059669 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .logout-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(15, 175, 101, 0.3);
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .page-header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 2rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .page-header h1 {
+        color: #1f2937;
+        margin-bottom: 0.5rem;
+      }
+
+      .page-header p {
+        color: #6b7280;
+      }
+
+      .filter-section {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 1.5rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .filter-section label {
+        font-weight: 600;
+        color: #374151;
+      }
+
+      .filter-section select {
+        padding: 0.5rem 1rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: border-color 0.3s;
+      }
+
+      .filter-section select:focus {
+        outline: none;
+        border-color: #0FAF65;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .stat-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 1.5rem;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+      }
+
+      .stat-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .stat-card h3 {
+        color: #6b7280;
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+      }
+
+      .stat-card .value {
+        color: #1f2937;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+      }
+
+      .stat-card .subtitle {
+        color: #9ca3af;
+        font-size: 0.875rem;
+      }
+
+      .charts-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .chart-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .chart-card h2 {
+        color: #1f2937;
+        margin-bottom: 1.5rem;
+        font-size: 1.25rem;
+      }
+
+      .chart-container {
+        position: relative;
+        height: 400px;
+      }
+
+      .screen-list {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .screen-list h2 {
+        color: #1f2937;
+        margin-bottom: 1.5rem;
+      }
+
+      .screen-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        border-bottom: 1px solid #e5e7eb;
+        transition: background-color 0.3s;
+      }
+
+      .screen-item:hover {
+        background-color: rgba(15, 175, 101, 0.05);
+      }
+
+      .screen-item:last-child {
+        border-bottom: none;
+      }
+
+      .screen-info {
+        flex: 1;
+      }
+
+      .screen-key {
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 0.25rem;
+      }
+
+      .screen-meta {
+        font-size: 0.875rem;
+        color: #6b7280;
+      }
+
+      .screen-count {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #0FAF65;
+      }
+
+      .loading {
+        text-align: center;
+        padding: 3rem;
+        color: white;
+        font-size: 1.25rem;
+      }
+
+      .error {
+        background: #fee2e2;
+        color: #991b1b;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: #6b7280;
+      }
+
+      .empty-state-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+      }
+
+      @media (min-width: 768px) {
+        .charts-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="logo">Vika API</div>
+        <div class="nav-right">
+          <a href="/api-keys" class="nav-link">API Keys</a>
+          <a href="/dashboard" class="nav-link active">Dashboard</a>
+          <a href="/documentation" class="nav-link">Dokumentasi</a>
+          <button class="logout-btn" onclick="handleLogout()">Keluar</button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <!-- Page Header -->
+      <div class="page-header">
+        <h1>📊 Dashboard Analitik</h1>
+        <p>Pantau statistik navigasi layar dan wawasan percakapan</p>
+      </div>
+
+      <!-- Filter Section -->
+      <div class="filter-section">
+        <label for="daysFilter">Rentang Waktu:</label>
+        <select id="daysFilter" onchange="loadDashboard()">
+          <option value="7">7 Hari Terakhir</option>
+          <option value="30" selected>30 Hari Terakhir</option>
+          <option value="60">60 Hari Terakhir</option>
+          <option value="90">90 Hari Terakhir</option>
+        </select>
+      </div>
+
+      <!-- Loading State -->
+      <div id="loadingState" class="loading">Memuat data analitik...</div>
+
+      <!-- Error State -->
+      <div id="errorState" class="error" style="display: none;"></div>
+
+      <!-- Stats Grid -->
+      <div id="statsGrid" class="stats-grid" style="display: none;">
+        <div class="stat-card">
+          <h3>Total Percakapan</h3>
+          <div class="value" id="totalConversations">-</div>
+          <div class="subtitle">Respons AI yang dianalisis</div>
+        </div>
+        <div class="stat-card">
+          <h3>Total Navigasi</h3>
+          <div class="value" id="totalNavigations">-</div>
+          <div class="subtitle">Pengalihan layar</div>
+        </div>
+        <div class="stat-card">
+          <h3>Tingkat Navigasi</h3>
+          <div class="value" id="navigationRate">-</div>
+          <div class="subtitle">Persentase dari percakapan</div>
+        </div>
+        <div class="stat-card">
+          <h3>Layar Unik</h3>
+          <div class="value" id="uniqueScreens">-</div>
+          <div class="subtitle">Tujuan berbeda</div>
+        </div>
+      </div>
+
+      <!-- Charts Grid -->
+      <div id="chartsGrid" class="charts-grid" style="display: none;">
+        <!-- Top Screens Chart -->
+        <div class="chart-card">
+          <h2>🎯 Layar Paling Sering Dinavigasi</h2>
+          <div class="chart-container">
+            <canvas id="topScreensChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Daily Navigation Chart -->
+        <div class="chart-card">
+          <h2>📈 Tren Navigasi</h2>
+          <div class="chart-container">
+            <canvas id="dailyNavigationChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Screen List -->
+      <div id="screenList" class="screen-list" style="display: none;">
+        <h2>📱 Statistik Semua Layar</h2>
+        <div id="screenListContent"></div>
+      </div>
+    </div>
+
+    <script>
+      let topScreensChart = null;
+      let dailyNavigationChart = null;
+
+      // Check authentication
+      function checkAuth() {
+        const token = localStorage.getItem("api_key") || sessionStorage.getItem("api_key");
+        if (!token) {
+          window.location.href = "/login";
+          return false;
+        }
+        return true;
+      }
+
+      // Load dashboard data
+      async function loadDashboard() {
+        if (!checkAuth()) return;
+
+        const days = document.getElementById("daysFilter").value;
+        const token = localStorage.getItem("api_key") || sessionStorage.getItem("api_key");
+
+        // Show loading
+        document.getElementById("loadingState").style.display = "block";
+        document.getElementById("errorState").style.display = "none";
+        document.getElementById("statsGrid").style.display = "none";
+        document.getElementById("chartsGrid").style.display = "none";
+        document.getElementById("screenList").style.display = "none";
+
+        try {
+          const response = await fetch(
+            `/api/analytics/screen-navigation?days=${days}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error("Gagal memuat data analitik");
+          }
+
+          const result = await response.json();
+          const data = result.data;
+
+          // Hide loading
+          document.getElementById("loadingState").style.display = "none";
+
+          // Check if data is empty
+          if (data.total_conversations === 0) {
+            showEmptyState();
+            return;
+          }
+
+          // Show content
+          document.getElementById("statsGrid").style.display = "grid";
+          document.getElementById("chartsGrid").style.display = "grid";
+          document.getElementById("screenList").style.display = "block";
+
+          // Update stats
+          document.getElementById("totalConversations").textContent =
+            data.total_conversations.toLocaleString();
+          document.getElementById("totalNavigations").textContent =
+            data.total_navigations.toLocaleString();
+          document.getElementById("navigationRate").textContent =
+            data.navigation_rate + "%";
+          document.getElementById("uniqueScreens").textContent =
+            data.screen_stats.length;
+
+          // Render charts
+          renderTopScreensChart(data.screen_stats);
+          renderDailyNavigationChart(data.daily_stats);
+
+          // Render screen list
+          renderScreenList(data.screen_stats);
+        } catch (error) {
+          console.error("Error loading dashboard:", error);
+          document.getElementById("loadingState").style.display = "none";
+          document.getElementById("errorState").style.display = "block";
+          document.getElementById("errorState").textContent =
+            "Gagal memuat data analitik. Silakan coba lagi.";
+        }
+      }
+
+      // Show empty state
+      function showEmptyState() {
+        document.getElementById("statsGrid").style.display = "none";
+        document.getElementById("chartsGrid").style.display = "none";
+        document.getElementById("screenList").innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">📊</div>
+            <h2>Tidak Ada Data</h2>
+            <p>Mulai gunakan API percakapan untuk melihat analitik di sini.</p>
+          </div>
+        `;
+        document.getElementById("screenList").style.display = "block";
+      }
+
+      // Render top screens chart
+      function renderTopScreensChart(screenStats) {
+        const ctx = document.getElementById("topScreensChart");
+
+        // Destroy existing chart
+        if (topScreensChart) {
+          topScreensChart.destroy();
+        }
+
+        // Take top 10 screens
+        const topScreens = screenStats.slice(0, 10);
+        const labels = topScreens.map((s) => s.screen_name || s.screen_id);
+        const counts = topScreens.map((s) => s.count);
+
+        topScreensChart = new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: "Jumlah Navigasi",
+                data: counts,
+                backgroundColor: "rgba(15, 175, 101, 0.7)",
+                borderColor: "rgba(15, 175, 101, 1)",
+                borderWidth: 2,
+                borderRadius: 8,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: false,
+              },
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  precision: 0,
+                },
+              },
+            },
+          },
+        });
+      }
+
+      // Render daily navigation chart
+      function renderDailyNavigationChart(dailyStats) {
+        const ctx = document.getElementById("dailyNavigationChart");
+
+        // Destroy existing chart
+        if (dailyNavigationChart) {
+          dailyNavigationChart.destroy();
+        }
+
+        const labels = dailyStats.map((d) => {
+          const date = new Date(d.date);
+          return date.toLocaleDateString("id-ID", {
+            month: "short",
+            day: "numeric",
+          });
+        });
+        const counts = dailyStats.map((d) => d.count);
+
+        dailyNavigationChart = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: "Navigasi",
+                data: counts,
+                backgroundColor: "rgba(15, 175, 101, 0.1)",
+                borderColor: "rgba(15, 175, 101, 1)",
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,
+                pointRadius: 4,
+                pointBackgroundColor: "rgba(15, 175, 101, 1)",
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: false,
+              },
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  precision: 0,
+                },
+              },
+            },
+          },
+        });
+      }
+
+      // Render screen list
+      function renderScreenList(screenStats) {
+        const container = document.getElementById("screenListContent");
+
+        if (screenStats.length === 0) {
+          container.innerHTML = `
+            <div class="empty-state">
+              <p>Tidak ada data navigasi layar</p>
+            </div>
+          `;
+          return;
+        }
+
+        const html = screenStats
+          .map((screen) => {
+            const lastAccessed = new Date(screen.last_accessed);
+            const formattedDate = lastAccessed.toLocaleDateString("id-ID", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            });
+
+            return `
+            <div class="screen-item">
+              <div class="screen-info">
+                <div class="screen-key">${screen.screen_name || screen.screen_id}</div>
+                <div class="screen-meta">
+                  ${screen.screen_id ? `ID: ${screen.screen_id} • ` : ''}Terakhir diakses: ${formattedDate}
+                </div>
+              </div>
+              <div class="screen-count">${screen.count}</div>
+            </div>
+          `;
+          })
+          .join("");
+
+        container.innerHTML = html;
+      }
+
+      // Handle logout
+      function handleLogout() {
+        localStorage.removeItem("api_key");
+        localStorage.removeItem("user");
+        sessionStorage.removeItem("api_key");
+        sessionStorage.removeItem("user");
+        window.location.href = "/login";
+      }
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", () => {
+        loadDashboard();
+      });
+    </script>
+  </body>
+</html>

@@ -54,6 +54,15 @@ async def docs_page():
   html_path = TEMPLATES_DIR / "docs.html"
   return html_path.read_text(encoding="utf-8")
 
+# Dashboard Page
+@pages_router.get("/dashboard", response_class=HTMLResponse)
+async def dashboard_page():
+  """
+  Analytics Dashboard page
+  """
+  html_path = TEMPLATES_DIR / "dashboard.html"
+  return html_path.read_text(encoding="utf-8")
+
 # Test page for Socket.IO
 @pages_router.get("/test/socket", response_class=HTMLResponse)
 async def socket_test_page():

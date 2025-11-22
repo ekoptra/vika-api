@@ -48,8 +48,19 @@
 
       .nav-right {
         display: flex;
-        gap: 1rem;
+        gap: 1.5rem;
         align-items: center;
+      }
+
+      .nav-link {
+        color: #374151;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+
+      .nav-link:hover {
+        color: #0FAF65;
       }
 
       .user-info {
@@ -305,6 +316,8 @@
       <div class="nav-container">
         <div class="logo">Vika API</div>
         <div class="nav-right">
+          <a href="/dashboard" class="nav-link">Dashboard</a>
+          <a href="/documentation" class="nav-link">Documentation</a>
           <span class="user-info" id="userEmail">Loading...</span>
           <button class="btn-logout" onclick="logout()">Logout</button>
         </div>

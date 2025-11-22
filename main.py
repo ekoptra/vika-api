@@ -5,6 +5,7 @@ from apis.screen.route import screen_router
 from apis.auth.route import auth_router
 from apis.conversation.route import conversation_router
 from apis.audio.route import audio_router
+from apis.analytics.route import analytics_router
 from common.socketio import sio
 from pages.route import pages_router
 from pathlib import Path
@@ -29,6 +30,7 @@ app.include_router(auth_router)
 app.include_router(screen_router)
 app.include_router(conversation_router)
 app.include_router(audio_router)
+app.include_router(analytics_router)
 app.include_router(pages_router)
 
 # Mount Socket.IO with other_asgi_app
