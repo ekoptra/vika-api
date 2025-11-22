@@ -442,61 +442,13 @@
         <span class="keyword">maven</span> {
             name = <span class="string">"GitHubPackages"</span>
             url = uri(<span class="string">"https://maven.pkg.github.com/arafat1419/VIKA"</span>)
-            <span class="keyword">credentials</span> {
-                username = project.findProperty(<span class="string">"github.user"</span>) <span class="keyword">as</span> String?
-                password = project.findProperty(<span class="string">"github.token"</span>) <span class="keyword">as</span> String?
-            }
         }
     }
 }</code></pre>
               </div>
 
               <h3 class="text-xl font-semibold text-gray-900 mb-3">
-                2. Add GitHub Credentials
-              </h3>
-              <p class="text-gray-700 mb-4">
-                Buat atau edit file
-                <code class="code-font text-sm bg-gray-100 px-2 py-1 rounded"
-                  >local.properties</code
-                >
-                di root project:
-              </p>
-
-              <div class="code-block mb-6">
-                <div class="code-header">
-                  <span class="text-white text-sm code-font"
-                    >local.properties</span
-                  >
-                  <button class="copy-btn" onclick="copyCode(this, 'code2')">
-                    <i class="fas fa-copy mr-1"></i> Copy
-                  </button>
-                </div>
-                <pre
-                  id="code2"
-                  class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
-                ><code>github.user=your-github-username
-github.token=your-github-personal-access-token</code></pre>
-              </div>
-
-              <div class="alert alert-warning">
-                <div class="flex">
-                  <i class="fas fa-exclamation-triangle mr-3 mt-1"></i>
-                  <div>
-                    <strong>GitHub Personal Access Token:</strong> Buat token
-                    dengan scope
-                    <code>read:packages</code> di
-                    <a
-                      href="https://github.com/settings/tokens/new"
-                      target="_blank"
-                      class="text-blue-600 underline"
-                      >GitHub Settings</a
-                    >. Jangan commit file <code>local.properties</code> ke git!
-                  </div>
-                </div>
-              </div>
-
-              <h3 class="text-xl font-semibold text-gray-900 mb-3 mt-6">
-                3. Add Dependency
+                2. Add Dependency
               </h3>
               <p class="text-gray-700 mb-4">
                 Tambahkan dependency ke
@@ -511,21 +463,21 @@ github.token=your-github-personal-access-token</code></pre>
                   <span class="text-white text-sm code-font"
                     >app/build.gradle.kts</span
                   >
-                  <button class="copy-btn" onclick="copyCode(this, 'code3')">
+                  <button class="copy-btn" onclick="copyCode(this, 'code2')">
                     <i class="fas fa-copy mr-1"></i> Copy
                   </button>
                 </div>
                 <pre
-                  id="code3"
+                  id="code2"
                   class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
                 ><code><span class="keyword">dependencies</span> {
     <span class="comment">// Vika SDK</span>
-    implementation(<span class="string">"com.vika.sdk:vika-sdk:1.0.1"</span>)
+    implementation(<span class="string">"com.vika.sdk:vika-sdk:1.0.3"</span>)
 }</code></pre>
               </div>
 
               <h3 class="text-xl font-semibold text-gray-900 mb-3">
-                4. Sync Project
+                3. Sync Project
               </h3>
               <p class="text-gray-700 mb-4">
                 Klik <strong>Sync Now</strong> atau jalankan:
@@ -534,12 +486,12 @@ github.token=your-github-personal-access-token</code></pre>
               <div class="code-block mb-6">
                 <div class="code-header">
                   <span class="text-white text-sm code-font">Terminal</span>
-                  <button class="copy-btn" onclick="copyCode(this, 'code4')">
+                  <button class="copy-btn" onclick="copyCode(this, 'code3')">
                     <i class="fas fa-copy mr-1"></i> Copy
                   </button>
                 </div>
                 <pre
-                  id="code4"
+                  id="code3"
                   class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
                 ><code>./gradlew build</code></pre>
               </div>
@@ -579,12 +531,12 @@ github.token=your-github-personal-access-token</code></pre>
                   <span class="text-white text-sm code-font"
                     >MyApplication.kt</span
                   >
-                  <button class="copy-btn" onclick="copyCode(this, 'code5')">
+                  <button class="copy-btn" onclick="copyCode(this, 'code4')">
                     <i class="fas fa-copy mr-1"></i> Copy
                   </button>
                 </div>
                 <pre
-                  id="code5"
+                  id="code4"
                   class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
                 ><code><span class="keyword">class</span> <span class="type">MyApplication</span> : <span class="type">Application</span>() {
 
@@ -630,12 +582,12 @@ github.token=your-github-personal-access-token</code></pre>
                   <span class="text-white text-sm code-font"
                     >Screen Registration</span
                   >
-                  <button class="copy-btn" onclick="copyCode(this, 'code6')">
+                  <button class="copy-btn" onclick="copyCode(this, 'code5')">
                     <i class="fas fa-copy mr-1"></i> Copy
                   </button>
                 </div>
                 <pre
-                  id="code6"
+                  id="code5"
                   class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
                 ><code><span class="keyword">private fun</span> <span class="function">registerScreens</span>() {
     <span class="keyword">val</span> sdk = <span class="type">VikaSDK</span>.<span class="function">getInstance</span>()
@@ -671,12 +623,12 @@ github.token=your-github-personal-access-token</code></pre>
               <div class="code-block mb-6">
                 <div class="code-header">
                   <span class="text-white text-sm code-font">MainActivity.kt</span>
-                  <button class="copy-btn" onclick="copyCode(this, 'code7')">
+                  <button class="copy-btn" onclick="copyCode(this, 'code6')">
                     <i class="fas fa-copy mr-1"></i> Copy
                   </button>
                 </div>
                 <pre
-                  id="code7"
+                  id="code6"
                   class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
                 ><code><span class="comment">// Simple usage</span>
 <span class="type">VikaSDK</span>.<span class="function">getInstance</span>().<span class="function">openVikaSDK</span>(context)
@@ -776,12 +728,12 @@ github.token=your-github-personal-access-token</code></pre>
                   <span class="text-white text-sm code-font"
                     >Advanced Config</span
                   >
-                  <button class="copy-btn" onclick="copyCode(this, 'code8')">
+                  <button class="copy-btn" onclick="copyCode(this, 'code7')">
                     <i class="fas fa-copy mr-1"></i> Copy
                   </button>
                 </div>
                 <pre
-                  id="code8"
+                  id="code7"
                   class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
                 ><code><span class="keyword">val</span> config = <span class="type">SDKConfig</span>.<span class="function">Builder</span>(<span class="string">"your-api-key"</span>)
     .<span class="function">minConfidenceThreshold</span>(<span class="number">0.8f</span>)
@@ -943,12 +895,12 @@ github.token=your-github-personal-access-token</code></pre>
                   <span class="text-white text-sm code-font"
                     >JKN Screen Registration</span
                   >
-                  <button class="copy-btn" onclick="copyCode(this, 'code9')">
+                  <button class="copy-btn" onclick="copyCode(this, 'code8')">
                     <i class="fas fa-copy mr-1"></i> Copy
                   </button>
                 </div>
                 <pre
-                  id="code9"
+                  id="code8"
                   class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
                 ><code><span class="keyword">val</span> jknScreens = <span class="function">listOf</span>(
     <span class="comment">// Home / Dashboard</span>
@@ -1041,12 +993,12 @@ github.token=your-github-personal-access-token</code></pre>
                   <span class="text-white text-sm code-font"
                     >AndroidManifest.xml</span
                   >
-                  <button class="copy-btn" onclick="copyCode(this, 'code10')">
+                  <button class="copy-btn" onclick="copyCode(this, 'code9')">
                     <i class="fas fa-copy mr-1"></i> Copy
                   </button>
                 </div>
                 <pre
-                  id="code10"
+                  id="code9"
                   class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
                 ><code><span class="keyword">&lt;activity</span>
     <span class="type">android:name</span>=<span class="string">".MainActivity"</span>
@@ -1083,12 +1035,12 @@ github.token=your-github-personal-access-token</code></pre>
               <div class="code-block mb-6">
                 <div class="code-header">
                   <span class="text-white text-sm code-font">MainActivity.kt</span>
-                  <button class="copy-btn" onclick="copyCode(this, 'code11')">
+                  <button class="copy-btn" onclick="copyCode(this, 'code10')">
                     <i class="fas fa-copy mr-1"></i> Copy
                   </button>
                 </div>
                 <pre
-                  id="code11"
+                  id="code10"
                   class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
                 ><code><span class="keyword">class</span> <span class="type">MainActivity</span> : <span class="type">ComponentActivity</span>() {
 
@@ -1142,12 +1094,12 @@ github.token=your-github-personal-access-token</code></pre>
               <div class="code-block mb-6">
                 <div class="code-header">
                   <span class="text-white text-sm code-font">Terminal</span>
-                  <button class="copy-btn" onclick="copyCode(this, 'code12')">
+                  <button class="copy-btn" onclick="copyCode(this, 'code11')">
                     <i class="fas fa-copy mr-1"></i> Copy
                   </button>
                 </div>
                 <pre
-                  id="code12"
+                  id="code11"
                   class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
                 ><code><span class="comment"># Test deep link to pendaftaran screen</span>
 adb shell am start -W -a android.intent.action.VIEW -d <span class="string">"jkn://pendaftaran"</span> com.jkn.mobile
@@ -1229,12 +1181,12 @@ adb shell am start -W -a android.intent.action.VIEW -d <span class="string">"jkn
                   <span class="text-white text-sm code-font"
                     >Voice UI Examples</span
                   >
-                  <button class="copy-btn" onclick="copyCode(this, 'code13')">
+                  <button class="copy-btn" onclick="copyCode(this, 'code12')">
                     <i class="fas fa-copy mr-1"></i> Copy
                   </button>
                 </div>
                 <pre
-                  id="code13"
+                  id="code12"
                   class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
                 ><code><span class="comment">// 1. Simple fullscreen (default)</span>
 <span class="type">VikaSDK</span>.<span class="function">getInstance</span>().<span class="function">openVikaSDK</span>(context)
@@ -1334,12 +1286,12 @@ adb shell am start -W -a android.intent.action.VIEW -d <span class="string">"jkn
               <div class="code-block mb-6">
                 <div class="code-header">
                   <span class="text-white text-sm code-font">Theme Presets</span>
-                  <button class="copy-btn" onclick="copyCode(this, 'code14')">
+                  <button class="copy-btn" onclick="copyCode(this, 'code13')">
                     <i class="fas fa-copy mr-1"></i> Copy
                   </button>
                 </div>
                 <pre
-                  id="code14"
+                  id="code13"
                   class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
                 ><code><span class="comment">// Default Dark Theme</span>
 <span class="keyword">val</span> darkTheme = <span class="type">VikaThemeConfig</span>.DEFAULT_DARK
@@ -1386,12 +1338,12 @@ adb shell am start -W -a android.intent.action.VIEW -d <span class="string">"jkn
                   <span class="text-white text-sm code-font"
                     >Conversation Listener</span
                   >
-                  <button class="copy-btn" onclick="copyCode(this, 'code15')">
+                  <button class="copy-btn" onclick="copyCode(this, 'code14')">
                     <i class="fas fa-copy mr-1"></i> Copy
                   </button>
                 </div>
                 <pre
-                  id="code15"
+                  id="code14"
                   class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
                 ><code><span class="keyword">val</span> sdk = <span class="type">VikaSDK</span>.<span class="function">getInstance</span>()
 
@@ -1437,12 +1389,12 @@ sdk.<span class="function">setConversationListener</span>(<span class="keyword">
                   <span class="text-white text-sm code-font"
                     >Socket Management</span
                   >
-                  <button class="copy-btn" onclick="copyCode(this, 'code16')">
+                  <button class="copy-btn" onclick="copyCode(this, 'code15')">
                     <i class="fas fa-copy mr-1"></i> Copy
                   </button>
                 </div>
                 <pre
-                  id="code16"
+                  id="code15"
                   class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
                 ><code><span class="keyword">val</span> sdk = <span class="type">VikaSDK</span>.<span class="function">getInstance</span>()
 
@@ -1652,12 +1604,12 @@ sdk.<span class="function">reconnectSocket</span>()</code></pre>
                   <span class="text-white text-sm code-font"
                     >Security Config Example</span
                   >
-                  <button class="copy-btn" onclick="copyCode(this, 'code17')">
+                  <button class="copy-btn" onclick="copyCode(this, 'code16')">
                     <i class="fas fa-copy mr-1"></i> Copy
                   </button>
                 </div>
                 <pre
-                  id="code17"
+                  id="code16"
                   class="p-4 text-sm text-gray-300 overflow-x-auto code-font"
                 ><code><span class="comment">// Secure configuration for production</span>
 <span class="keyword">val</span> secureConfig = <span class="type">SDKConfig</span>.<span class="function">Builder</span>(<span class="type">BuildConfig</span>.VIKA_API_KEY)
@@ -2160,14 +2112,8 @@ sdk.<span class="function">reconnectSocket</span>()</code></pre>
                           Solutions:
                         </p>
                         <ul class="text-sm text-gray-700 space-y-1 list-disc list-inside">
-                          <li>
-                            Verify GitHub credentials in local.properties are
-                            correct
-                          </li>
-                          <li>
-                            Generate new GitHub token with read:packages scope
-                          </li>
                           <li>Check maven repository URL is correct</li>
+                          <li>Verify internet connection</li>
                           <li>Try ./gradlew build --refresh-dependencies</li>
                           <li>Clear Gradle cache: ./gradlew clean</li>
                         </ul>
