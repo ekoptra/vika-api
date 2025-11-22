@@ -23,31 +23,14 @@ async def get_audio(filename: str):
   Returns:
     Audio file as FileResponse
   """
+  
+  file_path = os.path.join(AppConfig.UPLOAD_DIR, filename)
 
-  if AppConfig.APP_ENV == "production":
-    # Production: serve actual audio file
-    file_path = os.path.join(AppConfig.UPLOAD_DIR, filename)
+  if not os.path.exists(file_path):
+    raise HTTPException(status_code=404, detail="Audio file not found")
 
-    if not os.path.exists(file_path):
-      raise HTTPException(status_code=404, detail="Audio file not found")
-
-    return FileResponse(
-      path=file_path,
-      media_type="audio/mpeg",
-      filename=filename
-    )
-  else:
-    # Development: always serve dummy audio
-    dummy_audio_path = Path(__file__).parent.parent.parent / "public" / "dummy-audio.wav"
-
-    if not dummy_audio_path.exists():
-      raise HTTPException(
-        status_code=404,
-        detail="Dummy audio file not found. Please create public/dummy-audio.wav"
-      )
-
-    return FileResponse(
-      path=str(dummy_audio_path),
-      media_type="audio/wav",
-      filename="dummy-audio.wav"
-    )
+  return FileResponse(
+    path=file_path,
+    media_type="audio/mpeg",
+    filename=filename
+  )

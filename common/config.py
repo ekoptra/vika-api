@@ -8,4 +8,5 @@ class AppConfig:
   # Normalize path untuk Windows compatibility
   UPLOAD_DIR: str = os.path.normpath(os.getenv("UPLOAD_DIR", "uploads/audio"))
   APP_ENV: str = os.getenv("APP_ENV", "development")
+  OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
   

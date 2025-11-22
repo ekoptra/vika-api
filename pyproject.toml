@@ -19,6 +19,12 @@ python-socketio = ">=5.11.0"
 uvicorn = ">=0.38.0,<0.39.0"
 argon2-cffi = ">=23.1.0"
 email-validator = ">=2.0.0"
+langchain = ">=0.3.0"
+langchain-core = ">=0.3.0"
+langchain-openai = ">=0.2.0"
+openai = ">=1.54.0"
+presidio-analyzer = ">=2.2.354"
+presidio-anonymizer = ">=2.2.354"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

@@ -49,12 +49,13 @@ enum ConversationRole {
 }
 
 model SessionConversation {
-  id            String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  session_id    String           @map("session_id") @db.Uuid
-  role          ConversationRole
-  audio_path    String?          @map("audio_path") @db.VarChar(500)
-  audio_size    Int?             @map("audio_size")
-  response_json Json?            @map("response_json")
+  id              String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  session_id      String           @map("session_id") @db.Uuid
+  role            ConversationRole
+  audio_path      String?          @map("audio_path") @db.VarChar(500)
+  audio_size      Int?             @map("audio_size")
+  response_json   Json?            @map("response_json")
+  text_transcript String?          @map("text_transcript") @db.Text
 
   created_at DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updated_at DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)

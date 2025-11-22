@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, File, UploadFile, HTTPException, status
+from fastapi import APIRouter, BackgroundTasks, Depends, File, UploadFile, HTTPException, status
 from apis.conversation.dtos.send_audio import SendAudioResponse
 from apis.conversation.service import ConversationService
 from middleware.auth import verify_session
@@ -10,6 +10,7 @@ conversation_router = APIRouter(
 
 @conversation_router.post("/", response_model=SendAudioResponse)
 async def send_audio(
+  background_tasks: BackgroundTasks,
   audio: UploadFile = File(..., description="Audio recording file"),
   session_id: str = Depends(verify_session)
 ):
@@ -24,6 +25,7 @@ async def send_audio(
   Supported formats: mp3, wav, m4a, ogg, webm
 
   Args:
+    background_tasks: FastAPI BackgroundTasks for async processing
     audio: Audio file (multipart/form-data)
     session_id: Extracted from Bearer token via middleware
 
@@ -59,6 +61,6 @@ async def send_audio(
     )
 
   # Process audio and return immediately
-  result = await ConversationService.process_audio(session_id, audio)
+  result = await ConversationService.process_audio(session_id, audio, background_tasks)
 
   return SendAudioResponse(**result)

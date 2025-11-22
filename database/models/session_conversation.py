@@ -18,6 +18,7 @@ class SessionConversation(Base):
   role = Column(Enum(ConversationRole), nullable=False)
   audio_path = Column(String(500), nullable=True)
   audio_size = Column(Integer, nullable=True)
+  text_transcript = Column(String, nullable=True)
   response_json = Column(JSON, nullable=True)
   created_at = Column(DateTime(timezone=True), server_default=func.now())
   updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
